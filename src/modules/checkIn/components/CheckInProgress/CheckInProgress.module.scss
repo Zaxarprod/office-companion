@@ -1,0 +1,17 @@
+@use 'shared/styles/abstracts' as *;
+
+.dot {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(42, 32, 23, 0.12);
+}
+
+.done {
+  background: color(accent);
+  opacity: 0.5;
+}
+
+.on {
+  background: color(accent);
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "react-hooks", "import", "typescript"],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "ignorePatterns": ["dist", "docs/design", "backend"],
+  "rules": {
+    "no-console": "warn",
+    "react/button-has-type": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "import/no-default-export": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/shared/ui/Button/Button.tsx"],
+      "rules": {
+        "react/button-has-type": "off"
+      }
+    }
+  ]
+}

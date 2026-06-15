@@ -1,0 +1,30 @@
+@use 'shared/styles/abstracts' as *;
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.onAccent {
+  background: rgba(255, 255, 255, 0.18);
+  color: color(accent-fg);
+}
+
+.surface {
+  background: linear-gradient(135deg, #ead9b6, #caa56e);
+  color: color(accent);
+}
+
+.button {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  &:active {
+    opacity: 0.75;
+  }
+}

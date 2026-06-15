@@ -1,0 +1,79 @@
+@use 'shared/styles/abstracts' as *;
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--card-border);
+  border-radius: radius(md);
+  background: color(card);
+  box-shadow: 0 6px 16px -14px rgba(42, 32, 23, 0.4);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.triggerOpen {
+  border-color: color(accent);
+}
+
+.value {
+  flex: 1;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: color(ink);
+}
+
+.placeholder {
+  flex: 1;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: color(ink-faint);
+}
+
+.wheels {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.colon {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: color(ink);
+  margin: auto 0px;
+}
+
+// ——— переопределение стилей @ncdai/react-wheel-picker под оливку ———
+// optionItem и highlightItem ДОЛЖНЫ совпадать по метрикам (шрифт/размер/вес),
+// иначе подсвеченная копия не ложится на нижний текст — видно наложение.
+.optionItem,
+.highlightItem {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.optionItem {
+  color: color(ink-faint);
+}
+
+.highlightItem {
+  color: color(accent);
+}
+
+.highlightWrapper {
+  border-radius: radius(md);
+  background: color(accent-bg);
+}

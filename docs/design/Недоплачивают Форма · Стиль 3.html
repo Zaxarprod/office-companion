@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Недоплачивают · форма · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .fbody{ padding:6px 18px 0; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;}
+  .intro{ margin-top:6px; flex:0 0 auto;}
+  .intro h1{ font-size:24px; font-weight:800; letter-spacing:-.025em; line-height:1.1;}
+  .intro p{ font-size:12.5px; color:var(--ink-soft); margin-top:6px; line-height:1.45;}
+  .intro p b{ color:var(--ink); font-weight:600;}
+  .help{ margin-top:7px; font-size:11px; color:var(--ink-soft); display:flex; align-items:flex-start; gap:6px;}
+  .help svg{ width:12px; height:12px; flex:0 0 auto; margin-top:2px; color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+        <div class="scroll">
+          <div class="topbar"><div class="icbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div><div class="ttl" style="flex:1; text-align:center; font-size:15px;">Сравнение с рынком</div><div style="width:38px;"></div></div>
+
+          <div class="fbody">
+            <div class="intro">
+              <h1>Сколько тебе недоплачивают?</h1>
+              <p>4 поля — и покажем вилку по твоей роли. <b>Данные не уходят на сервер.</b></p>
+            </div>
+
+            <div class="field">
+              <label>Страна</label>
+              <div class="input"><span class="pre">🇷🇺</span><span>Россия</span><span class="post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+            </div>
+            <div class="field">
+              <label>Город</label>
+              <div class="input"><span>Москва</span><span class="post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+            </div>
+            <div class="field">
+              <label>Профессия</label>
+              <div class="input"><span>Frontend-разработчик</span><span class="post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+            </div>
+            <div class="field">
+              <label>Грейд</label>
+              <div class="chips"><button>Junior</button><button>Middle</button><button class="on">Senior</button><button>Lead</button></div>
+            </div>
+            <div class="field">
+              <label>Текущая зарплата <span class="opt">· необязательно</span></label>
+              <div class="input"><span>220 000</span><span class="post" style="margin-left:auto; color:var(--ink); font-weight:700;">₽</span></div>
+              <div class="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>Можно пропустить — покажем вилку без сравнения.</span></div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <button class="cta-lg">Показать вилку <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

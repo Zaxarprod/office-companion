@@ -1,0 +1,134 @@
+@use 'shared/styles/abstracts' as *;
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+// Самостоятельная страница (вне TabsLayout) — свой мобильный столбец.
+.standalone {
+  max-width: 440px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: color(bg);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header-hero {
+  padding: 28px 20px 22px;
+  border-radius: 0 0 30px 30px;
+  background: color(accent);
+}
+
+.header-bar {
+  padding: 22px 16px 8px;
+}
+
+.body {
+  flex: 1;
+  padding: 18px 16px 24px;
+}
+
+.footer {
+  flex: 0 0 auto;
+  padding: 12px 20px 20px;
+}
+
+// ——— декоративные shapes: плотные зелёные формы сверху (единственный absolute) ———
+.shapes {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: 260px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blobA,
+.blobB {
+  position: absolute;
+  background: var(--shape-color, #{color(accent)});
+}
+
+.shapes[data-variant='1'] {
+  .blobA {
+    top: -120px;
+    right: -60px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .blobB {
+    top: -150px;
+    left: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+}
+
+.shapes[data-variant='2'] {
+  .blobA {
+    top: -140px;
+    left: 50%;
+    width: 280px;
+    height: 220px;
+    border-radius: 0 0 50% 50%;
+    transform: translateX(-50%);
+    opacity: 0.45;
+  }
+  .blobB {
+    top: -90px;
+    right: -70px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+}
+
+.shapes[data-variant='3'] {
+  .blobA {
+    top: -110px;
+    left: -50px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+}
+
+// Купол-«мягкий герой» (успех чек-ина): сплошная заливка + декоративный кружок.
+.shapes[data-variant='4'] {
+  height: 208px;
+
+  .blobA {
+    top: -80px;
+    left: 50%;
+    width: 150%;
+    height: 288px;
+    border-radius: 0 0 50% 50% / 0 0 24% 24%;
+    transform: translateX(-50%);
+  }
+  .blobB {
+    top: 32px;
+    right: 38px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(90, 107, 53, 0.12);
+  }
+}

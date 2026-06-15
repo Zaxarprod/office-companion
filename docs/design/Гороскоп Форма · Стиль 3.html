@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Гороскоп · форма · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .fbody{ padding:6px 18px 0; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;}
+  .intro{ margin-top:6px; flex:0 0 auto;}
+  .intro h1{ font-size:23px; font-weight:800; letter-spacing:-.025em; line-height:1.12;}
+  .intro h1 .a{ color:var(--accent);}
+  .intro p{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.45;}
+  .gmascot{ margin-top:14px; height:188px; border-radius:22px; background:repeating-linear-gradient(135deg,rgba(80,55,30,.06) 0 8px,transparent 8px 16px),#f3ead2; border:1.4px dashed rgba(80,55,30,.3); display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:10px; color:rgba(80,55,30,.78); text-align:center; flex:0 0 auto; position:relative; overflow:hidden;}
+  .gmascot .s{ position:absolute; border-radius:50%; background:var(--gold); opacity:.5;}
+  .mini{ margin-top:14px; background:var(--card); border:1px solid var(--card-border); border-radius:16px; padding:13px 15px; display:flex; align-items:center; gap:13px; flex:0 0 auto; box-shadow:0 8px 20px -16px rgba(42,32,23,.4);}
+  .mini .m{ width:44px; height:44px; border-radius:13px; background:var(--gold-bg); color:var(--gold); display:grid; place-items:center;}
+  .mini .m svg{ width:25px; height:25px;}
+  .mini .k{ font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  .mini .n{ font-size:16px; font-weight:700; letter-spacing:-.01em; margin-top:2px;}
+  .mini .n span{ color:var(--ink-soft); font-weight:500; font-size:12px;}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+        <div class="scroll">
+          <div class="topbar"><div class="icbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div><div class="ttl" style="flex:1; text-align:center; font-size:15px;">Офисный гороскоп</div><div style="width:38px;"></div></div>
+
+          <div class="fbody">
+            <div class="intro">
+              <h1>Что <span class="a">звёзды</span> думают про твой рабочий день?</h1>
+              <p>Расскажи, когда ты родился — спросим у Меркурия (он опять ретроградит).</p>
+            </div>
+
+            <div class="gmascot">
+              <span class="s" style="width:3px;height:3px;top:18%;left:16%;"></span>
+              <span class="s" style="width:4px;height:4px;top:60%;left:24%;"></span>
+              <span class="s" style="width:2px;height:2px;top:30%;left:80%;"></span>
+              astrologer_sloth.png · placeholder
+            </div>
+
+            <div class="field">
+              <label>Дата рождения</label>
+              <div class="date-grid"><div class="date-cell"><span class="v">14</span><span class="k">день</span></div><div class="date-cell"><span class="v">сентября</span><span class="k">месяц</span></div><div class="date-cell"><span class="v">1996</span><span class="k">год</span></div></div>
+            </div>
+
+            <div class="mini">
+              <div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.3" r="2.2"/><path d="M12 8.5V12.5"/><path d="M9.2 12.5 7.6 16"/><path d="M14.8 12.5 16.4 16"/><path d="M8 20C8 14.6 9.6 12.6 12 12.6 14.4 12.6 16 14.6 16 20Z"/></svg></div>
+              <div><div class="k">твой знак</div><div class="n">Дева <span>· земля, перфекционизм</span></div></div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <button class="cta-lg">Узнать расклад на сегодня <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

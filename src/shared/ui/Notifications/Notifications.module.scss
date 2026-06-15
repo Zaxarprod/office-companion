@@ -1,0 +1,52 @@
+@use 'shared/styles/abstracts' as *;
+
+.wrap {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 16px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  border-left-width: 3px;
+  border-radius: radius(lg);
+  background: color(card);
+  box-shadow: 0 14px 30px -16px rgba(42, 32, 23, 0.5);
+  text-align: left;
+  cursor: pointer;
+  animation: slide-in 0.28s ease;
+}
+
+.success {
+  border-left-color: color(sage);
+}
+.error {
+  border-left-color: color(danger);
+}
+.warning {
+  border-left-color: color(gold);
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

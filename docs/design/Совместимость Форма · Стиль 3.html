@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Совместимость · форма · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .fbody{ padding:6px 18px 0; flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;}
+  .intro{ margin-top:6px; flex:0 0 auto;}
+  .intro h1{ font-size:23px; font-weight:800; letter-spacing:-.025em; line-height:1.12;}
+  .intro h1 .a{ color:var(--accent);}
+  .mini{ margin-top:8px; display:flex; align-items:center; gap:10px;}
+  .mini .m{ width:32px; height:32px; border-radius:50%; background:var(--accent-bg); color:var(--accent); display:grid; place-items:center;}
+  .mini .m svg{ width:18px; height:18px;}
+  .mini .m.b{ background:var(--gold-bg); color:var(--gold);}
+  .mini .t{ font-size:12.5px; font-weight:700;}
+  .mini .t span{ color:var(--ink-soft); font-weight:500;}
+  .cmascot{ margin-top:16px; height:120px; border-radius:18px; background:repeating-linear-gradient(135deg,rgba(80,55,30,.06) 0 8px,transparent 8px 16px),#f1ead7; border:1.4px dashed rgba(80,55,30,.28); display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:9.5px; color:rgba(80,55,30,.7); flex:0 0 auto;}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+        <div class="scroll">
+          <div class="topbar"><div class="icbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div><div class="ttl" style="flex:1; text-align:center; font-size:15px;">Совместимость</div><div style="width:38px;"></div></div>
+
+          <div class="fbody">
+            <div class="intro"><h1>Сверим <span class="a">звёзды</span> — кто с кем не сошёлся?</h1></div>
+
+            <div class="field">
+              <label>Твоя дата рождения</label>
+              <div class="date-grid"><div class="date-cell"><span class="v">14</span><span class="k">день</span></div><div class="date-cell"><span class="v">сентября</span><span class="k">месяц</span></div><div class="date-cell empty"><span class="v">год?</span><span class="k">не обяз.</span></div></div>
+              <div class="mini"><div class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.3" r="2.2"/><path d="M12 8.5V12.5"/><path d="M9.2 12.5 7.6 16"/><path d="M14.8 12.5 16.4 16"/><path d="M8 20C8 14.6 9.6 12.6 12 12.6 14.4 12.6 16 14.6 16 20Z"/></svg></div><div class="t">Дева <span>· земля</span></div></div>
+            </div>
+
+            <div class="cmascot">sloth_astro.png · placeholder</div>
+
+            <div class="field">
+              <label>Кто это?</label>
+              <div class="seg"><button class="on">Босс</button><button>Коллега</button><button>Бывший</button></div>
+            </div>
+
+            <div class="field">
+              <label>Дата рождения босса</label>
+              <div class="date-grid"><div class="date-cell"><span class="v">3</span><span class="k">день</span></div><div class="date-cell"><span class="v">июня</span><span class="k">месяц</span></div><div class="date-cell empty"><span class="v">год?</span><span class="k">не обяз.</span></div></div>
+              <div class="mini"><div class="m b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="6.5" r="2"/><path d="M8.5 8.6V18"/><path d="M5.5 12 8.5 10.2 11.5 12"/><circle cx="15.5" cy="6.5" r="2"/><path d="M15.5 8.6V18"/><path d="M12.5 12 15.5 10.2 18.5 12"/></svg></div><div class="t">Близнецы <span>· воздух</span></div></div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <button class="cta-lg">Проверить совместимость <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

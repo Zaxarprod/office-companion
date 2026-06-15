@@ -1,0 +1,60 @@
+@use 'shared/styles/abstracts' as *;
+
+.nav {
+  padding: 7px 6px;
+  border: 1px solid var(--card-border);
+  border-radius: radius(xl);
+  background: color(card);
+  box-shadow: 0 10px 26px -12px rgba(42, 32, 23, 0.35);
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  border-radius: radius(md);
+  background: color(accent-bg);
+  transition: left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  color: color(ink-soft);
+  transition: color 0.15s ease;
+}
+
+.itemActive {
+  color: color(accent);
+  font-weight: 700;
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+}

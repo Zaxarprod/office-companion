@@ -1,0 +1,42 @@
+@use 'shared/styles/abstracts' as *;
+
+.text {
+  margin: 0;
+
+  &[data-variant='mega'] {
+    @include typo(mega);
+  }
+  &[data-variant='display'] {
+    @include typo(display);
+  }
+  &[data-variant='heading'] {
+    @include typo(heading);
+  }
+  &[data-variant='subhead'] {
+    @include typo(subhead);
+  }
+  &[data-variant='body'] {
+    @include typo(body);
+  }
+  &[data-variant='caption'] {
+    @include typo(caption);
+  }
+  &[data-variant='small'] {
+    @include typo(small);
+  }
+  &[data-variant='label'] {
+    @include typo(label);
+  }
+  &[data-variant='micro'] {
+    @include typo(micro);
+  }
+  &[data-variant='numeric'] {
+    @include typo(numeric);
+  }
+}
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

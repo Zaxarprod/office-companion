@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Совместимость · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .top{ background:var(--accent); color:var(--accent-fg); padding:54px 20px 26px; margin-top:-44px; border-radius:0; position:relative; overflow:hidden; flex:0 0 auto; text-align:center;}
+  .top::after{ content:""; position:absolute; width:150px; height:150px; border-radius:50%; background:rgba(255,255,255,.09); top:-46px; left:-40px;}
+  .top::before{ content:""; position:absolute; width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,.07); bottom:-26px; right:14px;}
+  .top > *{ position:relative; z-index:2;}
+  .top .x{ position:absolute; top:0; right:0; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.18); display:grid; place-items:center; cursor:pointer; z-index:3;}
+  .top .x svg{ width:15px; height:15px;}
+  .pair{ display:flex; align-items:center; justify-content:center; gap:14px;}
+  .pair > div{ display:flex; flex-direction:column; align-items:center;}
+  .pair .gl{ width:56px; height:56px; border-radius:18px; background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.5); display:grid; place-items:center;}
+  .pair .gl svg{ width:30px; height:30px;}
+  .pair .x2{ font-size:17px; opacity:.7;}
+  .pair .nm{ font-size:10.5px; font-weight:600; margin-top:6px;}
+  .pct{ font-size:50px; font-weight:900; letter-spacing:-.03em; margin-top:14px; line-height:1;}
+  .vd{ font-size:14px; font-weight:700; margin-top:3px;}
+
+  .scaleC{ margin:16px 18px 0; flex:0 0 auto;}
+  .scaleC .track{ height:18px; border-radius:11px; background:linear-gradient(90deg,var(--danger) 0%,var(--ochre) 50%,var(--sage) 100%); position:relative; opacity:.92;}
+  .scaleC .mk{ position:absolute; top:50%; width:28px; height:28px; transform:translate(-50%,-50%); border-radius:50%; background:#fffaf0; border:4px solid var(--ink); box-shadow:0 3px 8px -2px rgba(42,32,23,.4);}
+  .scaleC .lbls{ display:flex; justify-content:space-between; margin-top:7px; font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); font-weight:600;}
+
+  .desc{ margin:16px 20px 0; font-size:12.5px; line-height:1.5; flex:0 0 auto;}
+  .desc b{ font-weight:700;}
+  .donuts{ margin:14px 18px 0; display:flex; justify-content:space-between; gap:8px; flex:0 0 auto;}
+  .donut{ flex:1; display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .donut .ring{ position:relative; width:68px; height:68px;}
+  .donut .ring svg{ width:100%; height:100%; transform:rotate(-90deg);}
+  .donut .ring .p{ position:absolute; inset:0; display:grid; place-items:center; font-family:"JetBrains Mono",monospace; font-weight:700; font-size:14px;}
+  .donut .cap{ font-size:10px; font-weight:600; text-align:center; line-height:1.2;}
+  .donut .cap em{ display:block; font-style:normal; font-size:9px; color:var(--ink-soft); margin-top:1px;}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp" style="--sb:#fffaf0;">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+
+        <div class="scroll">
+          <div class="top">
+            <span class="x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+            <div class="pair">
+              <div><div class="gl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.3" r="2.2"/><path d="M12 8.5V12.5"/><path d="M9.2 12.5 7.6 16"/><path d="M14.8 12.5 16.4 16"/><path d="M8 20C8 14.6 9.6 12.6 12 12.6 14.4 12.6 16 14.6 16 20Z"/></svg></div><div class="nm">Дева · ты</div></div>
+              <span class="x2">×</span>
+              <div><div class="gl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="6.5" r="2"/><path d="M8.5 8.6V18"/><path d="M5.5 12 8.5 10.2 11.5 12"/><circle cx="15.5" cy="6.5" r="2"/><path d="M15.5 8.6V18"/><path d="M12.5 12 15.5 10.2 18.5 12"/></svg></div><div class="nm">Близнецы · босс</div></div>
+            </div>
+            <div class="pct">34%</div>
+            <div class="vd">«Выживаете на выносливости»</div>
+          </div>
+
+          <div class="scaleC">
+            <div class="track"><div class="mk" style="left:34%;"></div></div>
+            <div class="lbls"><span>катастрофа</span><span>идеал</span></div>
+          </div>
+
+          <div class="desc">Ты строишь систему — он сносит её одним <b>«а давай по-другому»</b>. Земля ищет опору, воздух — новизну. Не худшая пара, но валидол держи под рукой.</div>
+
+          <div class="donuts">
+            <div class="donut"><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(42,32,23,.10)" stroke-width="3.6"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--danger)" stroke-width="3.6" pathLength="100" stroke-dasharray="18 100" stroke-linecap="round"/></svg><div class="p">18%</div></div><div class="cap">Дедлайны<em>как договор.</em></div></div>
+            <div class="donut"><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(42,32,23,.10)" stroke-width="3.6"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--ochre)" stroke-width="3.6" pathLength="100" stroke-dasharray="45 100" stroke-linecap="round"/></svg><div class="p">45%</div></div><div class="cap">Фидбэк<em>как даёт</em></div></div>
+            <div class="donut"><div class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(42,32,23,.10)" stroke-width="3.6"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--sage)" stroke-width="3.6" pathLength="100" stroke-dasharray="62 100" stroke-linecap="round"/></svg><div class="p">62%</div></div><div class="cap">Терпимость<em>к контролю</em></div></div>
+          </div>
+
+          <div class="foot" style="display:flex; flex-direction:column; gap:9px;">
+            <button class="cta-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Поделиться отчётом</button>
+            <button class="cta-lg" style="background:transparent; color:var(--ink); border:1px solid var(--card-border); box-shadow:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> На главную</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

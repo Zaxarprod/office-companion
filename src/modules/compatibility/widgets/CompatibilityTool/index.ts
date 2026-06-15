@@ -1,0 +1,1 @@
+export { CompatibilityTool } from './CompatibilityTool'

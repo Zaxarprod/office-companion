@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Гороскоп · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .hero2{ background:var(--accent); color:var(--accent-fg); border-radius:0 0 60px 60px; padding:58px 20px 30px; margin-top:-44px; flex:0 0 auto; display:flex; align-items:center; gap:14px; position:relative; overflow:hidden;}
+  .hero2::after{ content:""; position:absolute; width:150px; height:150px; border-radius:50%; background:rgba(255,255,255,.09); top:-50px; right:-40px;}
+  .hero2::before{ content:""; position:absolute; width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.07); bottom:-30px; left:34%;}
+  .hero2 > *{ position:relative; z-index:2;}
+  .hero2 .gl{ width:62px; height:62px; border-radius:50%; background:rgba(255,255,255,.16); border:2px solid rgba(255,255,255,.55); display:grid; place-items:center; flex:0 0 auto;}
+  .hero2 .gl svg{ width:34px; height:34px;}
+  .hero2 .k{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,250,240,.75); font-weight:600;}
+  .hero2 .n{ font-size:24px; font-weight:900; letter-spacing:-.02em; margin-top:2px;}
+  .hero2 .dt{ font-size:11.5px; color:rgba(255,250,240,.8); margin-top:2px;}
+  .merc{ margin:14px 18px 0; background:var(--ochre-bg); border-radius:14px; padding:11px 13px; font-size:12px; line-height:1.4; flex:0 0 auto;}
+  .merc b{ color:var(--ochre); font-weight:700;}
+  .lead{ margin:14px 20px 0; font-size:14px; line-height:1.55; flex:0 0 auto;}
+  .lead b{ font-weight:700;}
+  .srows{ margin:14px 18px 0; display:flex; flex-direction:column; gap:9px; flex:0 0 auto;}
+  .srow{ background:var(--card); border-radius:14px; padding:11px 13px; display:grid; grid-template-columns:34px 1fr auto; gap:11px; align-items:center; box-shadow:0 8px 18px -15px rgba(42,32,23,.4);}
+  .srow .ic{ width:34px; height:34px; border-radius:10px; background:var(--ochre-bg); color:var(--ochre); display:grid; place-items:center;}
+  .srow .ic svg{ width:16px; height:16px;}
+  .srow .t{ font-size:12.5px; font-weight:600;}
+  .srow .t em{ display:block; font-style:normal; font-weight:500; font-size:10.5px; color:var(--ink-soft); margin-top:1px;}
+  .srow .vd{ font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px;}
+  .vd.bad{ background:var(--danger-bg); color:var(--danger);}
+  .vd.mid{ background:var(--ochre-bg); color:var(--ochre);}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp" style="--sb:#fffaf0;">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+
+        <div class="scroll">
+          <div class="hero2">
+            <div class="gl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6.3" r="2.2"/><path d="M12 8.5 V12.5"/><path d="M9.2 12.5 L7.6 16"/><path d="M14.8 12.5 L16.4 16"/><path d="M8 20 C8 14.6 9.6 12.6 12 12.6 C14.4 12.6 16 14.6 16 20 Z"/></svg></div>
+            <div><div class="k">Сегодня · ср, 29 мая</div><div class="n">Дева</div><div class="dt">24 авг — 23 сен · земля</div></div>
+          </div>
+
+          <div class="merc"><b>☿ Меркурий ретроградит.</b> Деплой, созвоны и здравый смысл — под вопросом.</div>
+
+          <div class="lead">Сегодня твой идеальный план доживёт ровно до первого <b>«есть минутка?»</b>. Не строй систему, которую к обеду снесёт чужой приоритет. Ты справишься — как всегда, просто немного устав.</div>
+
+          <div class="srows">
+            <div class="srow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="t">Созвоны<em>3 из них можно было письмом</em></div><span class="vd bad">риск ↑</span></div>
+            <div class="srow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div><div class="t">Дедлайны<em>сдвинутся вправо, как всегда</em></div><span class="vd mid">терпимо</span></div>
+            <div class="srow"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="t">Общий чат<em>лучше не открывать до кофе</em></div><span class="vd bad">опасно</span></div>
+          </div>
+
+          <div class="foot" style="display:flex; flex-direction:column; gap:9px;">
+            <button class="cta-lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Поделиться раскладом</button>
+            <button class="cta-lg" style="background:transparent; color:var(--ink); border:1px solid var(--card-border); box-shadow:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> На главную</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

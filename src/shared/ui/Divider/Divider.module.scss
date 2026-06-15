@@ -1,0 +1,15 @@
+.divider {
+  flex: 0 0 auto;
+  background: var(--card-border);
+}
+
+.horizontal {
+  display: block;
+  width: 100%;
+  height: 1px;
+}
+
+.vertical {
+  width: 1px;
+  align-self: stretch;
+}

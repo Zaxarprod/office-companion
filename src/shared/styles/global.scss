@@ -1,0 +1,3 @@
+// Глобальная точка входа стилей. Импортируется один раз в main.tsx.
+@use 'shared/styles/theme';
+@use 'shared/styles/reset';

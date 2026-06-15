@@ -1,0 +1,35 @@
+@use 'shared/styles/abstracts' as *;
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--card-border);
+  border-radius: radius(md);
+  background: color(card);
+  box-shadow: 0 6px 16px -14px rgba(42, 32, 23, 0.4);
+  transition: border-color 0.15s ease;
+
+  &:focus-within {
+    border-color: color(accent);
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: color(ink);
+
+  &::placeholder {
+    color: color(ink-faint);
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,48 @@
+@use 'shared/styles/abstracts' as *;
+
+.backdrop {
+  background: rgba(42, 32, 23, 0.45);
+}
+
+.container {
+  // lib инлайнит left:0/width:100% → лист прижат влево; !important бьёт инлайн.
+  // left+right:0 + width:auto + margin auto → лист по центру с ограничением ширины.
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+  max-width: 480px;
+  margin-inline: auto;
+  background: color(bg);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px -12px rgba(42, 32, 23, 0.4);
+}
+
+.dragHeader {
+  display: flex;
+  justify-content: center;
+  padding: 9px 0 0;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.grabber {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--card-border);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 18px 12px;
+}
+
+.body {
+  padding: 0 18px 24px;
+}

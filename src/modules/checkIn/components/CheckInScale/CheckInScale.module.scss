@@ -1,0 +1,27 @@
+@use 'shared/styles/abstracts' as *;
+
+.cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--card-border);
+  border-radius: radius(md);
+  background: color(card);
+  box-shadow: 0 8px 18px -14px rgba(42, 32, 23, 0.4);
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 800;
+  color: color(ink);
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.on {
+  border-color: color(accent);
+  background: color(accent);
+  color: color(accent-fg);
+  box-shadow: 0 12px 22px -8px var(--accent-shadow);
+}

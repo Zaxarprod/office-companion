@@ -1,0 +1,27 @@
+@use 'shared/styles/abstracts' as *;
+
+.input {
+  min-width: 0;
+  max-width: 240px;
+  padding: 2px 10px;
+  border: none;
+  border-radius: radius(sm);
+  outline: none;
+  font: inherit;
+
+  &[data-variant='display'] {
+    @include typo(display);
+  }
+  &[data-variant='heading'] {
+    @include typo(heading);
+  }
+  &[data-variant='subhead'] {
+    @include typo(subhead);
+  }
+  &[data-variant='body'] {
+    @include typo(body);
+  }
+  &[data-variant='caption'] {
+    @include typo(caption);
+  }
+}

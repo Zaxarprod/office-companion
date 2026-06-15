@@ -1,0 +1,56 @@
+// Единственный источник правды для значений токенов (runtime CSS-переменные).
+// SCSS-обёртки в _functions.scss / _typography.scss маппятся на эти переменные.
+
+:root {
+  // surfaces
+  --bg: #faf6ec;
+  --card: #fffdf8;
+  --card-border: rgba(42, 32, 23, 0.06);
+
+  // text
+  --ink: #2a2017;
+  --ink-soft: #6a5d4d;
+  --ink-faint: #b0a496;
+
+  // accent (olive)
+  --accent: #5a6b35;
+  --accent-fg: #fffaf0;
+  --accent-bg: rgba(90, 107, 53, 0.12);
+  --accent-shadow: 0 16px 30px -12px rgba(90, 107, 53, 0.5);
+  --nav-on: #e2e4c6;
+
+  // semantic
+  --gold: #a8842c;
+  --gold-bg: rgba(168, 132, 44, 0.16);
+  --ochre: #8a7642;
+  --ochre-bg: rgba(138, 118, 66, 0.16);
+  --coral: #b15a35;
+  --coral-bg: rgba(177, 90, 53, 0.14);
+  --sage: #5a6b35;
+  --sage-bg: rgba(90, 107, 53, 0.16);
+  --danger: #b8331f;
+  --danger-bg: rgba(184, 51, 31, 0.14);
+
+  // metric tints
+  --moon: #6a5d4d;
+  --moon-bg: #ece2cb;
+  --heart: #5a6b35;
+  --heart-bg: #e2e4c6;
+  --mint: #e6ead2; // светло-зелёный (успех чек-ина)
+
+  // radii
+  --r-sm: 11px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  // shadows
+  --sh-card: 0 10px 24px -16px rgba(42, 32, 23, 0.4);
+  --sh-float: 0 14px 30px -16px rgba(42, 32, 23, 0.5);
+  --sh-accent: var(--accent-shadow);
+
+  // fonts
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}

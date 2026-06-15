@@ -1,0 +1,73 @@
+@use 'shared/styles/abstracts' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 16px; // макет cta-lg: 16px (между md/lg)
+  font-family: var(--font-sans);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 0.05s ease,
+    opacity 0.15s ease,
+    filter 0.15s ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.size-lg {
+  height: 52px;
+  padding: 0 18px;
+  font-size: 14.5px;
+}
+
+.size-md {
+  height: 46px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.variant-primary {
+  background: color(accent);
+  color: color(accent-fg);
+  box-shadow: shadow(accent);
+
+  &:not(:disabled):hover {
+    filter: brightness(1.05);
+  }
+}
+
+.variant-ghost {
+  background: transparent;
+  color: color(ink);
+  border: 1px solid var(--card-border);
+
+  &:not(:disabled):hover {
+    background: color(accent-bg);
+  }
+}
+
+// Светлая кнопка поверх акцентного фона (hero CTA).
+.variant-light {
+  background: rgba(255, 255, 255, 0.95);
+  color: color(accent);
+
+  &:not(:disabled):hover {
+    background: rgba(255, 255, 255, 1);
+  }
+}

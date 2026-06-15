@@ -1,0 +1,21 @@
+@use 'shared/styles/abstracts' as *;
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-width: 440px;
+  margin: 0 auto;
+  background: color(bg);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.navwrap {
+  flex: 0 0 auto;
+  padding: 16px;
+}

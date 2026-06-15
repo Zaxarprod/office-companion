@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Чек-ин · Стиль 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style3.css">
+<style>
+  .chhead{ padding:6px 16px 0; display:flex; align-items:center; gap:10px; flex:0 0 auto;}
+  .prog{ flex:1; display:flex; gap:5px;}
+  .prog .d{ height:5px; border-radius:3px; flex:1; background:rgba(42,32,23,.12);}
+  .prog .d.on{ background:var(--accent);}
+  .prog .d.done{ background:var(--accent); opacity:.5;}
+  .step{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-soft);}
+  .mascot{ margin:16px 18px 0; height:258px; border-radius:24px; background:repeating-linear-gradient(135deg,rgba(80,55,30,.06) 0 8px,transparent 8px 16px),#f1ead7; border:1.4px dashed rgba(80,55,30,.28); display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:10px; color:rgba(80,55,30,.7); flex:0 0 auto;}
+  .q{ margin:20px 20px 0; flex:0 0 auto;}
+  .q em{ display:block; font-style:normal; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);}
+  .q h1{ font-size:24px; font-weight:800; letter-spacing:-.02em; margin-top:7px; line-height:1.15;}
+  .poles{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-soft); margin:20px 22px 0;}
+  .scale{ margin:8px 18px 0; display:grid; grid-template-columns:repeat(5,1fr); gap:9px; flex:0 0 auto;}
+  .scale button{ aspect-ratio:1/1; height:auto; border-radius:16px; background:var(--card); border:1px solid var(--card-border); font-size:20px; font-weight:800; color:var(--ink); cursor:pointer; box-shadow:0 8px 18px -14px rgba(42,32,23,.4);}
+  .scale button.on{ background:var(--accent); color:var(--accent-fg); border-color:var(--accent); box-shadow:0 12px 22px -8px var(--accent-shadow);}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="phone-inner esp">
+        <div class="island"></div>
+        <div class="statusbar"><span>9:41</span><div class="right"><span class="sig"></span><span class="batt"></span></div></div>
+
+        <div class="scroll">
+          <div class="chhead">
+            <div class="icbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="prog"><span class="d done"></span><span class="d on"></span><span class="d"></span><span class="d"></span><span class="d"></span></div>
+            <span class="step">2/5</span>
+          </div>
+
+          <div class="mascot">sloth_thinking.png · placeholder</div>
+
+          <div class="q">
+            <em>Вопрос 2 из 5 · энергия</em>
+            <h1>Сколько в тебе сегодня сил?</h1>
+          </div>
+
+          <div class="poles"><span>вымотан</span><span>в потоке</span></div>
+          <div class="scale">
+            <button>1</button><button>2</button><button class="on">3</button><button>4</button><button>5</button>
+          </div>
+
+          <div class="foot" style="display:flex; gap:10px;">
+            <button class="icbtn" style="width:52px; height:52px; flex:0 0 auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="cta-lg" style="flex:1;">Дальше <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

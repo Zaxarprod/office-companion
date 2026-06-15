@@ -1,0 +1,3 @@
+// Агрегатор SCSS-обёрток. В модулях: @use 'shared/styles/abstracts' as *;
+@forward 'shared/styles/functions';
+@forward 'shared/styles/typography';

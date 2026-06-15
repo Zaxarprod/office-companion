@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Держимся — концепция продукта (тёмная тема)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0c0c0c;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            line-height: 1.55;
+            color: #e3e0db;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #121212;
+            border-radius: 32px;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            padding: 2rem 1.8rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 3rem 2rem;
+            }
+            .container {
+                padding: 3rem 2.8rem;
+            }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #b7d0a5, #8aa87d);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            border-left: 5px solid #7f9a6e;
+            padding-left: 1.2rem;
+        }
+
+        .doc-subhead {
+            color: #a8a49e;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            font-size: 1rem;
+            border-bottom: 1px solid #2e2b28;
+            padding-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-top: 2.2rem;
+            margin-bottom: 1rem;
+            color: #cbd9c0;
+            letter-spacing: -0.2px;
+            border-left: 4px solid #7f6e5c;
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-top: 1.6rem;
+            margin-bottom: 0.75rem;
+            color: #bccdad;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.2rem 0 0.5rem 0;
+            color: #cfc5b6;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #e0dbd4;
+        }
+
+        ul, ol {
+            margin: 0.75rem 0 1rem 1.6rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        ul ul, ol ul {
+            margin-top: 0.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        ul:not(.no-bullet) {
+            list-style-type: none;
+        }
+
+        ul:not(.no-bullet) > li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        ul:not(.no-bullet) > li::before {
+            content: "•";
+            color: #9bba89;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -0.1rem;
+        }
+
+        ul ul > li::before {
+            content: "◦";
+            color: #b7a58b;
+        }
+
+        ol {
+            list-style-type: decimal;
+            padding-left: 0.2rem;
+        }
+
+        ol li {
+            margin-left: 1rem;
+        }
+
+        blockquote {
+            margin: 1.2rem 0;
+            padding: 1rem 1.5rem;
+            background: #1d1c1a;
+            border-left: 5px solid #7f9a6e;
+            border-radius: 20px;
+            font-style: normal;
+            color: #d9d2c8;
+            font-weight: 400;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        blockquote p {
+            margin-bottom: 0;
+        }
+
+        strong, b {
+            color: #d0e2bd;
+            font-weight: 600;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #3a3734, transparent);
+        }
+
+        .principle-list, .feature-list {
+            background: #1a1917;
+            padding: 0.8rem 1.2rem;
+            border-radius: 24px;
+            margin: 1rem 0;
+            border: 1px solid #2b2825;
+        }
+
+        .badge {
+            background: #2a2824;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            color: #c9beaf;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            blockquote {
+                padding: 0.8rem 1rem;
+            }
+        }
+
+        .emph-copy {
+            font-style: italic;
+            color: #c6bcac;
+        }
+        
+        /* дополнительные стили для цитат внутри текста */
+        .text-quote {
+            color: #cfc6b8;
+            font-style: normal;
+            background: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>«Держимся»</h1>
+    <div class="doc-subhead">Цифровой компаньон для офисных работников · Концепция продукта</div>
+
+    <!-- 1. Product Vision — переработан с сохранением текста слово в слово -->
+    <h2>1. Product Vision</h2>
+    <p>«Держимся» — приложение-компаньон для офисных работников, которое помогает человеку честно понимать свое состояние в цифровом рабочем хаосе. Приложение помогает:</p>
+    <ul>
+        <li>понимать свое эмоциональное состояние</li>
+        <li>замечать выгорание и перегруз</li>
+        <li>адекватно оценивать происходящее на работе</li>
+        <li>лучше понимать свое положение на рынке</li>
+        <li>справляться с повседневными корпоративными стрессами и задачами</li>
+    </ul>
+    <p>«Держимся» не пытается сделать пользователя “идеально продуктивным”. Вместо этого продукт выступает как:</p>
+    <ul>
+        <li>понимающий коллега</li>
+        <li>внешний наблюдатель</li>
+        <li>помощник в рабочем хаосе</li>
+    </ul>
+    <p>Приложение помогает пользователю видеть картину целиком через:</p>
+    <ul>
+        <li>интеграции с цифровыми сервисами</li>
+        <li>аналитику повседневной активности</li>
+        <li>короткие ежедневные check-ins</li>
+        <li>contextual insights</li>
+        <li>эмоциональные summaries</li>
+        <li>напоминания и наблюдения</li>
+        <li>самоироничный tone of voice</li>
+    </ul>
+    <p>Главная цель продукта: помочь человеку чувствовать себя менее потерянным и более осознанным внутри современной офисной жизни.</p>
+
+    <!-- 2. Positioning -->
+    <h2>2. Positioning</h2>
+    <p>«Держимся» — цифровой компаньон для офисных работников, который помогает честно понимать свое состояние и происходящее вокруг в постоянном рабочем и цифровом хаосе. В отличие от productivity- и wellness-приложений, «Держимся» не пытается “починить” пользователя или сделать его эффективнее. Продукт выступает как понимающий коллега и внешний наблюдатель, который помогает человеку лучше ориентироваться в современной корпоративной жизни — с аналитикой, самоиронией и honest insights.</p>
+
+    <!-- 3. Core Problem / Core Insight — разбит на логические части -->
+    <h2>3. Core Problem / Core Insight</h2>
+    <p>Современная офисная жизнь в России сопровождается постоянным эмоциональным и цифровым перегрузом. Цены растут, жизнь становится дороже, а многие люди годами живут без ощутимого роста дохода, сталкиваются с сокращениями, нестабильностью и тревогой за свое будущее. При этом вокруг — постоянный поток “успешного успеха”, который только усиливает ощущение усталости и несоответствия.</p>
+    <p>Большая часть современной работы проходит внутри:</p>
+    <ul>
+        <li>мессенджеров</li>
+        <li>созвонов</li>
+        <li>уведомлений</li>
+        <li>бесконечного переключения контекста</li>
+    </ul>
+    <p>Из-за этого человеку становится все сложнее:</p>
+    <ul>
+        <li>замечать собственное состояние</li>
+        <li>понимать уровень эмоциональной нагрузки</li>
+        <li>вовремя отдыхать</li>
+        <li>адекватно оценивать происходящее в своей жизни и работе</li>
+    </ul>
+    <p>В результате накапливаются:</p>
+    <ul>
+        <li>хронический стресс</li>
+        <li>эмоциональное выгорание</li>
+        <li>ощущение потерянности</li>
+        <li>усталость от постоянного цифрового присутствия</li>
+    </ul>
+    <p>При этом большинство существующих приложений предлагают:</p>
+    <ul>
+        <li>быть продуктивнее</li>
+        <li>работать эффективнее</li>
+        <li>оптимизировать себя</li>
+    </ul>
+    <p>Но многим людям сегодня нужен не очередной инструмент эффективности. Им нужен:</p>
+    <ul>
+        <li>понятный, честный и близкий цифровой компаньон, который помогает лучше понимать свое состояние и чувствовать себя менее одиноко внутри современной корпоративной жизни.</li>
+    </ul>
+
+    <!-- 4. Target Audience (ICP) -->
+    <h2>4. Target Audience (ICP)</h2>
+    <p><strong>Основная аудитория</strong> Молодые и middle-age офисные работники, живущие в постоянной цифровой рабочей среде и испытывающие хроническую эмоциональную перегрузку. Возраст 22–35 лет Профиль Люди, чья работа и повседневная жизнь почти полностью завязаны на: компьютеры мессенджеры рабочие чаты созвоны постоянное онлайн-присутствие</p>
+    <p><strong>Основные профессии</strong> разработчики дизайнеры product/project managers маркетологи аналитики HR sales support digital-специалисты сотрудники IT и digital-компаний</p>
+    <p><strong>Поведенческие особенности</strong></p>
+    <ul>
+        <li>проводят большую часть дня в Telegram/Slack/корпоративных чатах</li>
+        <li>испытывают эмоциональную усталость от работы</li>
+        <li>тревожатся о деньгах и будущем</li>
+        <li>чувствуют давление “успешного успеха”</li>
+        <li>склонны к самоиронии</li>
+        <li>устали от токсичной productivity-культуры</li>
+        <li>хотят чувствовать больше контроля и понимания происходящего в своей жизни</li>
+    </ul>
+    <p><strong>Emotional fit аудитории</strong> Пользователь должен узнавать себя в продукте и чувствовать: “это приложение как будто понимает мою жизнь”.</p>
+
+    <!-- 5. Product Personality / Tone of Voice -->
+    <h2>5. Product Personality / Tone of Voice</h2>
+    <p>«Держимся» общается с пользователем как понимающий коллега, который хорошо знаком с современной офисной жизнью и ее эмоциональной нагрузкой.</p>
+    <p><strong>Tone of voice продукта:</strong> спокойный честный самоироничный empathetic наблюдательный ненавязчивый</p>
+    <p><strong>Продукт не:</strong></p>
+    <ul>
+        <li>осуждает пользователя</li>
+        <li>давит мотивацией</li>
+        <li>учит “правильно жить”</li>
+        <li>навязывает продуктивность</li>
+        <li>превращает жизнь в KPI</li>
+    </ul>
+    <p>Вместо этого «Держимся» помогает пользователю:</p>
+    <ul>
+        <li>замечать свое состояние</li>
+        <li>чувствовать эмоциональную поддержку</li>
+        <li>видеть рабочие и жизненные паттерны</li>
+        <li>относиться к происходящему чуть легче и осознаннее</li>
+    </ul>
+    <p>Самоирония — важная часть identity продукта. «Держимся» должен уметь смотреть на офисную жизнь с легким и узнаваемым юмором, потому что самоирония — один из главных способов эмоционально справляться с современным рабочим стрессом. При этом юмор продукта не должен превращаться в:</p>
+    <ul>
+        <li>токсичность</li>
+        <li>агрессию</li>
+        <li>осуждение пользователя</li>
+        <li>постоянный doom humor</li>
+        <li>обесценивание проблем</li>
+    </ul>
+    <p>Юмор должен создавать ощущение: “да, все немного в хаосе, но мы держимся”. Продукт должен создавать ощущение: “это приложение меня понимает и не пытается меня переделать”.</p>
+
+    <!-- 6. Product Principles (оформление оставлено как было, но адаптировано под тёмную тему) -->
+    <h2>6. Product Principles</h2>
+    <div class="principle-list">
+        <p><strong>1. Продукт не пытается “починить” пользователя</strong></p>
+        <p>«Держимся» не считает пользователя недостаточно продуктивным, успешным или организованным.</p>
+        <p>Продукт помогает лучше понимать свое состояние, а не соответствовать чужим ожиданиям.</p>
+        <p><strong>2. Honest reflection важнее мотивации</strong></p>
+        <p>Продукт не мотивирует агрессивно и не навязывает “успешный успех”.</p>
+        <p>Главная задача — честно отражать состояние и происходящее вокруг пользователя.</p>
+        <p><strong>3. Самоирония — способ поддержки, а не давления</strong></p>
+        <p>Юмор помогает легче воспринимать стресс и перегруз, но никогда не используется для:</p>
+        <ul>
+            <li>унижения пользователя</li>
+            <li>обесценивания проблем</li>
+            <li>токсичной мотивации</li>
+        </ul>
+        <p><strong>4. Продукт должен снижать ощущение одиночества</strong></p>
+        <p>Пользователь должен чувствовать: “мои проблемы и усталость нормальны для современной рабочей среды”.</p>
+        <p><strong>5. Продукт уважает эмоциональное состояние пользователя</strong></p>
+        <p>«Держимся» не:</p>
+        <ul>
+            <li>перегружает уведомлениями</li>
+            <li>вызывает чувство вины</li>
+            <li>создает дополнительный стресс</li>
+            <li>требует постоянного внимания</li>
+        </ul>
+        <p><strong>6. Аналитика должна помогать понимать, а не контролировать</strong></p>
+        <p>Insights и summaries нужны не для тотального self-tracking, а для: осознанности, contextual awareness, понимания паттернов жизни и работы</p>
+        <p><strong>7. Простота важнее количества функций</strong></p>
+        <p>Каждая функция должна: давать эмоциональную ценность или помогать пользователю лучше понимать свое состояние.</p>
+        <p><strong>8. Продукт должен ощущаться “живым”</strong></p>
+        <p>Tone, summaries и notifications должны создавать ощущение: присутствия, понимания, companionship. А не безличного сервиса.</p>
+    </div>
+
+    <!-- 7. Core Features / MVP Scope (без изменений, текст слово в слово) -->
+    <h2>7. Core Features / MVP Scope</h2>
+    <p><strong>MVP цель</strong></p>
+    <p>Первая версия продукта должна: помогать пользователю лучше понимать свое состояние, давать ощущение эмоциональной поддержки, помогать ориентироваться в рабочей и карьерной ситуации, формировать привычку регулярной эмоциональной рефлексии.</p>
+    <p>Продукт не должен пытаться стать: productivity-системой, корпоративным HR-инструментом, “лайф-менеджером”, AI-психотерапевтом.</p>
+    
+    <h3>MVP Features</h3>
+    <p><strong>1. Профиль пользователя</strong></p>
+    <p>Пользователь указывает: профессию, возраст, пол, уровень дохода, город, опыт работы. Данные используются для персонализации аналитики и карьерных insights.</p>
+    <p><strong>2. “Сколько мне недоплачивают?”</strong></p>
+    <p>Одна из главных emotional hooks продукта. ИИ анализирует: профессию, опыт, регион, уровень дохода пользователя. И сравнивает это с: рыночными зарплатами, актуальными вакансиями, медианными значениями по рынку. Продукт показывает: потенциальную недооцененность, примерную рыночную вилку, реальные вакансии с подтвержденными зарплатами.</p>
+    <p><strong>3. Daily Check-ins</strong></p>
+    <p>Короткие ежедневные check-ins: настроение, уровень усталости, стресс, ощущение перегруза, “хотел уволиться сегодня?”</p>
+    <p><strong>4. Burnout & Emotional State Analysis</strong></p>
+    <p>Продукт анализирует: эмоциональное состояние, уровень усталости, вероятность выгорания, признаки перегруза, динамику состояния пользователя. С: ежедневными summaries, weekly reports, monthly reports, динамикой изменений состояния.</p>
+    <p><strong>5. Salary Countdown</strong></p>
+    <p>Countdown до зарплаты с поддерживающими и самоироничными комментариями.</p>
+    <p><strong>6. “Сколько раз я хотел уволиться”</strong></p>
+    <p>Трекер мыслей об увольнении: ежедневная фиксация, weekly/monthly statistics, динамика состояния.</p>
+    <p><strong>7. Notifications & Summaries</strong></p>
+    <p>Продукт отправляет: ежедневные observations, weekly reflections, reminders, summaries состояния пользователя. Tone: supportive, honest, self-ironic, non-toxic.</p>
+    
+    <h3>V1 / Post-MVP Features</h3>
+    <ul>
+        <li><strong>Интеграции со здоровьем и активностью</strong> – Apple Health, Google Fit, sleep tracking apps. Анализ сна, активности, отдыха, цифровой нагрузки.</li>
+        <li><strong>“Важный разговор”</strong> – AI-assisted feature для подготовки к разговору о повышении, обсуждению нагрузки, увольнению, просьбе об отпуске, сложным рабочим разговорам. Продукт предлагает формулировки, сценарии общения, стратегии разговора.</li>
+        <li><strong>Автопоиск выгодных вакансий</strong> – Раз в неделю ИИ анализирует рынок и предлагает более выгодные вакансии, лучшие зарплатные предложения, релевантные карьерные возможности.</li>
+        <li><strong>Advanced Career Insights</strong> – Более глубокая аналитика: динамика зарплат, рыночные тренды, востребованность профессии, риск сокращений, состояние рынка по специализации.</li>
+        <li><strong>Расширенные AI summaries</strong> – Более персонализированные emotional insights, behavioral patterns, burnout predictions, long-term reflections.</li>
+    </ul>
+
+    <!-- 8. Core User Loop / Retention Mechanics -->
+    <h2>8. Core User Loop / Retention Mechanics</h2>
+    <p><strong>Основной пользовательский цикл</strong></p>
+    <p>Пользователь регулярно возвращается в приложение, чтобы: понимать свое текущее состояние, замечать уровень перегруза и усталости, отслеживать эмоциональные и рабочие паттерны, получать contextual insights о своей жизни и работе, чувствовать эмоциональную поддержку и понимание.</p>
+    <p><strong>Daily Loop</strong> – Каждый день пользователь проходит короткий emotional check-in, получает summaries и observations, отслеживает свое состояние, видит burnout / stress dynamics, взаимодействует с relatable mechanics продукта. Продукт создает ощущение: “меня понимают и помогают увидеть картину чуть яснее”.</p>
+    <p><strong>Weekly Loop</strong> – Раз в неделю пользователь получает weekly reflection, burnout trends, эмоциональную динамику, аналитику рабочей нагрузки, карьерные insights, self-ironic observations, результаты автопоиска более выгодных вакансий и карьерных предложений. Weekly recap должен стать эмоциональной привычкой, ключевой retention mechanic, shareable частью продукта.</p>
+    <p><strong>Long-Term Retention</strong> – Со временем пользователь начинает замечать recurring patterns, лучше понимать свое состояние, видеть влияние работы на жизнь, отслеживать карьерную и эмоциональную динамику, находить более выгодные карьерные возможности через аналитику рынка и автопоиск вакансий. Продукт постепенно становится частью повседневной рутины, цифровым компаньоном, эмоциональной точкой опоры внутри рабочей жизни.</p>
+
+    <!-- 9. Monetization Strategy -->
+    <h2>9. Monetization Strategy</h2>
+    <p>«Держимся» использует freemium-модель с ежемесячной подпиской. Основная идея монетизации: дать пользователю реальную эмоциональную и практическую ценность бесплатно, а более глубокую аналитику, AI-функции и расширенные возможности открыть через подписку. Продукт не должен создавать ощущение агрессивного paywall, давления на пользователя, эксплуатации эмоционального состояния. Монетизация должна ощущаться мягко, честно, нативно относительно продукта.</p>
+    <p><strong>Бесплатная версия</strong> – базовые daily check-ins, базовые emotional summaries, burnout/stress tracking, salary countdown, ограниченное количество AI-запросов, базовые weekly reports, ограниченный доступ к карьерной аналитике. Бесплатная версия должна быть полноценной, полезной, вызывающей привычку возвращаться.</p>
+    <p><strong>Premium-подписка</strong> открывает расширенную аналитику состояния, deep burnout insights, долгосрочные emotional trends, полный доступ к функции “Сколько мне недоплачивают?”, расширенные карьерные insights, AI-помощь для “важных разговоров”, полный доступ к weekly/monthly reports, advanced AI summaries, расширенный автопоиск вакансий, больше AI-запросов и персонализации.</p>
+    <p><strong>Pricing:</strong> Стартовая модель: 199 ₽ / месяц. Возможные future options: годовая подписка со скидкой, premium tiers, AI-heavy subscription plan.</p>
+    <p><strong>Product Philosophy Around Monetization:</strong> Пользователь должен чувствовать: “я плачу не за набор функций, а за продукт, который реально помогает мне лучше понимать свою жизнь и работу”. Подписка должна восприниматься как доступная, эмоционально оправданная, полезная в повседневной жизни, а не как очередной “productivity SaaS”.</p>
+
+    <!-- 10. Distribution / Growth Strategy -->
+    <h2>10. Distribution / Growth Strategy</h2>
+    <p>Основной рост продукта должен строиться вокруг relatable и shareable контента, в котором пользователи узнают свою повседневную офисную жизнь. Продукт ориентирован на organic-first growth через социальные сети, шеринги, мемность, emotional relatability, обсуждение рабочих и карьерных проблем.</p>
+    <p><strong>Основные каналы продвижения:</strong> TikTok / Reels (короткие видео: burnout insights, офисные ситуации, карьерная тревога, “сколько мне недоплачивают”, relatable workplace humor, weekly recaps). Telegram (канал продукта, relatable posts, офисные мемы, исследования и аналитика, user stories, weekly observations).</p>
+    <p><strong>Viral Mechanics:</strong> Продукт должен стимулировать шеринги через weekly summaries, burnout reports, salary analytics, emotional insights, “сколько раз хотел уволиться”, workplace observations. Главный эффект: “это буквально моя жизнь”.</p>
+    <p><strong>Emotional Virality:</strong> Пользователи делятся продуктом не ради “успешности”, а ради узнаваемости, самоиронии, эмоционального попадания, ощущения коллективного опыта. <strong>Community Effect:</strong> Со временем вокруг продукта может формироваться комьюнити людей, которые устали от токсичной productivity-культуры, переживают эмоциональный перегруз, живут внутри digital-work среды, хотят чувствовать себя менее одиноко.</p>
+    <p><strong>Growth Philosophy:</strong> Маркетинг продукта должен ощущаться честным, relatable, self-aware, человечным, а не корпоративным, motivational, “успешно-успешным”, агрессивно продающим.</p>
+
+    <!-- 11. MVP Launch Strategy -->
+    <h2>11. MVP Launch Strategy</h2>
+    <p><strong>Launch Philosophy:</strong> Первая цель запуска — не масштабирование, а проверка emotional resonance, интереса к отдельным функциям, retention, willingness to pay, shareability продукта. На раннем этапе продукт может запускаться не как полноценное приложение, а как набор отдельных MVP-механик и feature concepts. Например: “Сколько мне недоплачивают?”, burnout analysis, “сколько раз я хотел уволиться”, weekly recap, salary countdown. Для каждой механики можно делать отдельные mockups и mini-MVP, запускать небольшой платный трафик, тестировать конверсию и стоимость перехода, смотреть уровень вовлечения и шерингов, собирать waitlist, проводить интервью и фокус-группы.</p>
+    <p><strong>Этап 1 — Контент и аудитория:</strong> До полноценного MVP запускаются Telegram-канал, короткие видео/Reels, relatable workplace content, mockups продукта, weekly recaps, фейковые summaries, workplace observations. Цель: собрать early audience, проверить tone, понять реакцию людей, сформировать waitlist.</p>
+    <p><strong>Этап 2 — Closed Beta:</strong> Первая версия продукта запускается на ограниченную аудиторию (друзья, IT/digital-комьюнити, Telegram-аудитория, early adopters). Задача: проверить retention, понять какие features реально цепляют, собрать emotional feedback.</p>
+    <p><strong>Этап 3 — Soft Launch:</strong> Постепенный публичный запуск через Telegram, Reels/TikTok, workplace communities, офисные мем-паблики, digital-аудитория. Без большого PR, платного масштабного маркетинга, попытки “взорвать рынок”.</p>
+    <p><strong>Этап 4 — Product Iteration:</strong> После первых пользователей продукт дорабатывается на основе retention, usage patterns, emotional engagement, shares, feedback.</p>
+
+    <!-- 12. Success Metrics -->
+    <h2>12. Success Metrics</h2>
+    <p>Главная цель продукта — создать приложение, к которому пользователи регулярно возвращаются не из-за зависимости или productivity pressure, а из-за ощущения понимания, пользы и эмоционального resonance.</p>
+    <p><strong>Early Validation Metrics:</strong> какие механики вызывают самый сильный emotional response, какие функции люди готовы использовать регулярно, какие features лучше всего удерживают внимание и вызывают желание вернуться.</p>
+    <p><strong>Core Product Metrics:</strong> Retention (D1 retention, D7 retention, weekly active users, процент пользователей, возвращающихся за weekly recap). Engagement (количество daily check-ins, открываемость summaries и notifications, время взаимодействия с weekly reports, использование карьерных features, количество повторных AI-запросов). Emotional Resonance (насколько пользователи узнают себя в продукте, ощущение “это буквально моя жизнь” через шеринги, скриншоты, user discussions, комментарии, organic mentions). Viral Metrics (количество шерингов weekly recaps, referrals, рост waitlist, сохранения и пересылки контента, стоимость привлечения пользователя через social content). Monetization Metrics (conversion to premium, retention платящих пользователей, willingness to pay, наиболее ценные premium features).</p>
+    <p><strong>Long-Term Success Signal:</strong> Главный признак успеха — пользователи начинают воспринимать «Держимся» как часть своей повседневной офисной жизни и эмоциональной рутины.</p>
+
+    <!-- 13. Risks & Failure Modes -->
+    <h2>13. Risks & Failure Modes</h2>
+    <ul>
+        <li><strong>Высокая стоимость поддержки AI-функций</strong> – AI-heavy features могут быть дорогими в поддержке, плохо масштабироваться, увеличивать стоимость пользователя. Важно контролировать AI-costs, ограничивать usage в free-tier, сохранять core product полезным даже без heavy AI usage.</li>
+        <li><strong>Высокая стоимость привлечения пользователей</strong> – Consumer apps требуют постоянного контента, маркетинга, distribution, organic growth. Риск высокой стоимости рекламы, привлечения аудитории, удержания внимания без strong virality.</li>
+        <li><strong>Пользователи могут быть не готовы платить</strong> – Несмотря на emotional attachment, часть аудитории может не воспринимать продукт как subscription-worthy, использовать только free-tier. Важно создавать strong daily value и эмоциональную привычку.</li>
+        <li><strong>Конкуренция со стороны больших платформ</strong> – wellness apps, AI assistants, productivity platforms, career services. Преимущество «Держимся» — emotional positioning, cultural fit, tone of voice, понимание локальной аудитории, скорость запуска.</li>
+    </ul>
+
+    <!-- 14. Long-Term Vision -->
+    <h2>14. Long-Term Vision</h2>
+    <p>«Держимся» создается как продукт, максимально попадающий в текущее состояние современной офисной жизни в России. Продукт строится вокруг актуальных проблем текущего времени: эмоционального перегруза, нестабильности, карьерной тревоги, цифровой усталости, давления современной рабочей среды. Команда понимает, что этот cultural moment может быть временным, а потребности аудитории и рынок со временем могут сильно измениться. Поэтому стратегия продукта — не строить “вечный суперапп”, а быстро запускаться, находить сильный emotional resonance, собирать активную аудиторию, выстраивать retention, эффективно монетизироваться в рамках текущего рыночного окна возможностей.</p>
+    <p><strong>Strategic Goal:</strong> создать сильный consumer-продукт с высокой эмоциональной вовлеченностью и понятной аудиторией, пока проблема максимально актуальна.</p>
+    <p><strong>Potential Future Paths:</strong> масштабирование в broader workplace companion platform, развитие в сторону career intelligence, усиление AI companion layer, расширение на другие рынки. Либо оставаться нишевым profitable product, стать частью более крупной платформы или приобретение.</p>
+    <p><strong>Product Philosophy:</strong> скорость запуска, скорость проверки гипотез, сильное эмоциональное попадание, retention и virality, pragmatic execution.</p>
+
+    <!-- 15. Anti-Goals -->
+    <h2>15. Anti-Goals</h2>
+    <p>«Держимся» не должен становиться:</p>
+    <ul>
+        <li><strong>Productivity-приложением</strong> – не заставлять работать больше, не навязывать hyper-productivity, не превращать жизнь в KPI, не создавать чувство вины за “неэффективность”.</li>
+        <li><strong>AI-психотерапевтом</strong> – продукт не заменяет психолога, психотерапию, медицинскую помощь. «Держимся» — companion и reflective tool, а не mental health treatment platform.</li>
+        <li><strong>Корпоративным HR-инструментом</strong> – продукт создается для работников, а не для компаний. Не должен превращаться в employee monitoring system, HR dashboard, performance tracker.</li>
+        <li><strong>Doom-scrolling приложением</strong> – не усиливать тревожность, не романтизировать выгорание, не превращать усталость в endless content consumption.</li>
+        <li><strong>Generic wellness app</strong> – не терять cultural specificity, relatable tone, emotional honesty, связь с реальной офисной жизнью.</li>
+        <li><strong>Meme-only продуктом</strong> – самоирония важна, но продукт должен сохранять практическую ценность, полезность, meaningful insights, emotional support.</li>
+        <li><strong>Перегруженной платформой “на все случаи жизни”</strong> – не суперапп, не task manager, не life OS, не universal assistant. Главная ценность — фокус и emotional precision.</li>
+    </ul>
+
+    <hr />
+    <p style="font-size: 0.85rem; text-align: center; color: #8d867d; margin-top: 1.5rem;">«Держимся» — честный цифровой компаньон в рабочем хаосе</p>
+</div>
+</body>
+</html>

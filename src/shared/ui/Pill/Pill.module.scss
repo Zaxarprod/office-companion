@@ -1,0 +1,45 @@
+@use 'shared/styles/abstracts' as *;
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: radius(pill);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tone-accent {
+  background: color(accent-bg);
+  color: color(accent);
+}
+.tone-sage {
+  background: color(sage-bg);
+  color: color(sage);
+}
+.tone-gold {
+  background: color(gold-bg);
+  color: color(gold);
+}
+.tone-ochre {
+  background: color(ochre-bg);
+  color: color(ochre);
+}
+.tone-coral {
+  background: color(coral-bg);
+  color: color(coral);
+}
+.tone-danger {
+  background: color(danger-bg);
+  color: color(danger);
+}
+
+.tone-primary {
+  background: color(accent);
+  color: color(accent-fg);
+}

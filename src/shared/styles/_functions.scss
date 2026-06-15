@@ -1,0 +1,52 @@
+@use 'sass:list';
+
+// Имена токенов, валидные для color(). Совпадают с переменными в theme.scss.
+$color-tokens: (
+  bg,
+  card,
+  ink,
+  ink-soft,
+  ink-faint,
+  accent,
+  accent-fg,
+  accent-bg,
+  gold,
+  gold-bg,
+  ochre,
+  ochre-bg,
+  coral,
+  coral-bg,
+  sage,
+  sage-bg,
+  danger,
+  danger-bg,
+  moon,
+  moon-bg,
+  heart,
+  heart-bg,
+  nav-on
+);
+
+$radius-tokens: (sm, md, lg, xl, pill);
+$shadow-tokens: (card, float, accent);
+
+@function color($name) {
+  @if not list.index($color-tokens, $name) {
+    @error 'Unknown color token: #{$name}';
+  }
+  @return var(--#{$name});
+}
+
+@function radius($name) {
+  @if not list.index($radius-tokens, $name) {
+    @error 'Unknown radius token: #{$name}';
+  }
+  @return var(--r-#{$name});
+}
+
+@function shadow($name) {
+  @if not list.index($shadow-tokens, $name) {
+    @error 'Unknown shadow token: #{$name}';
+  }
+  @return var(--sh-#{$name});
+}

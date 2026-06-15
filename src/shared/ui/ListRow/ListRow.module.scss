@@ -1,0 +1,18 @@
+@use 'shared/styles/abstracts' as *;
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 13px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.15s ease;
+
+  &:active {
+    opacity: 0.55;
+  }
+}

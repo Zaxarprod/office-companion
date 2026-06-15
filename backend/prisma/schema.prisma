@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  name             String
+  avatarUrl        String?
+  birthday         DateTime?
+  birthTime        String?
+  country          String?
+  city             String?
+  birthCity        String? // место рождения — для натальной карты
+  profession       String?
+  grade            String? // канонический (junior…) или произвольный
+  experienceYears  Int?
+  experienceMonths Int?
+  isPro            Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  identities AuthIdentity[]
+  checkIns   CheckIn[]
+  intents    IntentEvent[]
+  usage      UsageEvent[]
+}
+
+// Способ входа. provider — значение из контракта AuthProvider ('telegram' | 'web').
+model AuthIdentity {
+  id         String   @id @default(cuid())
+  provider   String
+  externalId String
+  meta       Json?
+  createdAt  DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, externalId])
+}
+
+// Каталог вопросов чек-ина (серверный). key — стабильный ключ метрики.
+model Question {
+  id         String   @id @default(cuid())
+  key        String   @unique
+  // day — «порядок прохождения»: набор вопросов для N-го чек-ина (циклится).
+  day        Int      @default(1)
+  // order — позиция внутри дня.
+  order      Int
+  title      String
+  helperText String
+  lowText    String
+  highText   String
+  image      String   @default("")
+  scaleMax   Int      @default(5)
+  group      String?
+  active     Boolean  @default(true)
+}
+
+model CheckIn {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  advice    String          @default("")
+  day       Int             @default(1)
+  createdAt DateTime        @default(now())
+  answers   CheckInAnswer[]
+
+  @@index([userId, createdAt])
+}
+
+model CheckInAnswer {
+  id          String  @id @default(cuid())
+  checkInId   String
+  checkIn     CheckIn @relation(fields: [checkInId], references: [id], onDelete: Cascade)
+  questionKey String
+  value       Int
+
+  @@index([questionKey])
+}
+
+model IntentEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  feature   String
+  action    String
+  plan      String?
+  createdAt DateTime @default(now())
+}
+
+// Использование инструментов — для квоты и аналитики.
+model UsageEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool      String
+  createdAt DateTime @default(now())
+
+  @@index([userId, tool, createdAt])
+}
+
+model City {
+  id      String  @id @default(cuid())
+  name    String
+  region  String?
+  country String?
+  // Координаты + часовой пояс — для натальной карты (асцендент, точное время в UTC).
+  lat     Float?
+  lon     Float?
+  tz      Int? // смещение от UTC в часах
+  @@index([name])
+}

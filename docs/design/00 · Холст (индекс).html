@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Держимся — Холст (новый стиль)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:"Inter",system-ui,sans-serif; color:#f3ece0;}
+  body{ background:#16181a; background-image:radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px); background-size:26px 26px; min-height:100vh; padding:56px 56px 120px;}
+  .page-head{ margin-bottom:44px; padding-bottom:24px; border-bottom:1.5px dashed rgba(255,255,255,.16); max-width:1000px;}
+  .page-head .brand{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#9ab06f; font-weight:600;}
+  .page-head h1{ font-size:38px; font-weight:800; letter-spacing:-.025em; margin-top:8px; color:#faf3e6;}
+  .page-head p{ font-size:14.5px; color:#b3a896; margin-top:10px; max-width:620px; line-height:1.6;}
+  .page-head .tag{ display:inline-block; margin-top:14px; font-family:"JetBrains Mono",monospace; font-size:11px; color:#1c1814; background:#9ab06f; font-weight:700; padding:5px 11px; border-radius:999px;}
+  .section{ margin-bottom:60px;}
+  .sec-head{ display:flex; align-items:center; gap:14px; margin-bottom:22px;}
+  .sec-head .no{ font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:#1c1814; background:#9ab06f; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; flex:0 0 auto;}
+  .sec-head .tx h2{ font-size:21px; font-weight:700; letter-spacing:-.015em; color:#faf3e6;}
+  .sec-head .tx p{ font-size:12.5px; color:#8f8675; margin-top:2px;}
+  .sec-head .ln{ flex:1; height:1px; background:rgba(255,255,255,.12); margin-left:4px;}
+  .frames{ display:flex; flex-wrap:wrap; gap:28px; align-items:flex-start;}
+  .frame{ background:#e9e4d8; border:1px solid rgba(0,0,0,.4); border-radius:22px; overflow:hidden; box-shadow:0 30px 60px -30px rgba(0,0,0,.7); width:max-content;}
+  .frame .cap{ background:#14110d; color:#d6cab6; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; font-weight:600; padding:11px 18px; display:flex; align-items:center; gap:9px; border-bottom:1px solid rgba(255,255,255,.06);}
+  .frame .cap .dot{ width:8px; height:8px; border-radius:50%; background:#9ab06f; flex:0 0 auto;}
+  .frame .cap .sub{ color:#7d7466; font-weight:500;}
+  .frame iframe{ display:block; border:none; background:#e9e4d8;}
+  .frame.wide{ background:#faf6ec; width:100%; max-width:1180px;}
+  .frame.wide iframe{ background:#faf6ec; width:100%;}
+</style>
+</head>
+<body>
+
+  <div class="page-head">
+    <div class="brand">Держимся</div>
+    <h1>Холст · новый стиль</h1>
+    <p>Все экраны в обновлённом «смелом современном» стиле: акцентные hero-блоки, мягкие карточки, плитки. Основной акцент — оливковый.</p>
+    <div class="tag">Style 3 · Olive</div>
+  </div>
+
+  <!-- 01 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">01</div><div class="tx"><h2>Главный экран</h2><p>Домашний экран — точка входа</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Главная <span class="sub">· hero + плитки 2×2</span></div><iframe data-src="Главный экран · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">02</div><div class="tx"><h2>Профиль и функции</h2><p>Профиль, хаб функций и Premium-апселл</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Профиль <span class="sub">· hero-аватар, блоки, апгрейд</span></div><iframe data-src="Профиль · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Функции <span class="sub">· суперапп-сетка</span></div><iframe data-src="Функции · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Функции · Premium-шит <span class="sub">· тап по PRO-функции</span></div><iframe data-src="Функции Апселл · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">03</div><div class="tx"><h2>Ежедневный ритуал</h2><p>Чек-ин состояния — шкалы и завершение</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Чек-ин · 1–5 <span class="sub">· квадратные кнопки</span></div><iframe data-src="Чек-ин · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Чек-ин · 1–10 <span class="sub">· два ряда</span></div><iframe data-src="Чек-ин 1-10 · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Готово <span class="sub">· снимок дня + совет</span></div><iframe data-src="Чек-ин Готово · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">04</div><div class="tx"><h2>Деньги и рынок</h2><p>Форма и результат — позиция на рынке труда</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Форма <span class="sub">· ввод данных</span></div><iframe data-src="Недоплачивают Форма · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Результат <span class="sub">· медиана, гистограмма, табы</span></div><iframe data-src="Сколько недоплачивают · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">05</div><div class="tx"><h2>Офисный гороскоп</h2><p>Ежедневный ритуал · вирусное</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Форма <span class="sub">· дата рождения + маскот</span></div><iframe data-src="Гороскоп Форма · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Расклад <span class="sub">· гороскоп на день</span></div><iframe data-src="Гороскоп · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 06 · Совместимость -->
+  <div class="section">
+    <div class="sec-head"><div class="no">06</div><div class="tx"><h2>Совместимость</h2><p>С боссом, коллегой или бывшим</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Форма <span class="sub">· кто это + две даты</span></div><iframe data-src="Совместимость Форма · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+      <div class="frame"><div class="cap"><span class="dot"></span>Результат <span class="sub">· %, шкала, бублики</span></div><iframe data-src="Совместимость · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="section">
+    <div class="sec-head"><div class="no">07</div><div class="tx"><h2>Монетизация</h2><p>Мягкий пейволл</p></div><div class="ln"></div></div>
+    <div class="frames">
+      <div class="frame"><div class="cap"><span class="dot"></span>Подписка <span class="sub">· модалка, планы, функции</span></div><iframe data-src="Подписка · Стиль 3.html" width="440" height="900" loading="lazy" scrolling="no"></iframe></div>
+    </div>
+  </div>
+
+<script>
+  // Single-phone screens are all the same size — fix height, no auto-resize.
+  var frames = Array.prototype.slice.call(document.querySelectorAll('iframe[data-src]'));
+  frames.forEach(function(f){ f.src = f.getAttribute('data-src'); });
+</script>
+</body>
+</html>

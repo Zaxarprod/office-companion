@@ -1,0 +1,31 @@
+@use 'shared/styles/abstracts' as *;
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid var(--card-border);
+  border-radius: radius(pill);
+  background: color(card);
+  color: color(ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.on {
+  background: color(accent);
+  color: color(accent-fg);
+  border-color: color(accent);
+  box-shadow: 0 8px 16px -6px var(--accent-shadow);
+}

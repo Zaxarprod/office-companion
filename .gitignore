@@ -1,0 +1,59 @@
+# Зависимости
+node_modules/
+
+# Сборка (фронт — dist/, бэк — backend/dist/, оба ловятся без слэша-префикса)
+dist/
+dist-ssr/
+build/
+*.tsbuildinfo
+
+# Кэш сборщиков
+.vite/
+.cache/
+.temp/
+.tmp/
+
+# Логи
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Переменные окружения и секреты (BOT_TOKEN, JWT_SECRET, DATABASE_URL, ключи API)
+# Ловит и backend/.env. Шаблоны .env.example — коммитим.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Prisma: локальные БД (schema.prisma и prisma/migrations/ — КОММИТИМ!)
+*.db
+*.db-journal
+*.sqlite
+
+# Тесты / покрытие
+coverage/
+
+# Редакторы / IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ОС
+.DS_Store
+Thumbs.db
+
+# Claude Code: локальное и машинозависимое (общие .claude/* можно коммитить)
+.claude/settings.local.json
+.claude/launch.json
+
+# Прочее
+*.local

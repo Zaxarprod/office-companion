@@ -1,0 +1,46 @@
+@use 'shared/styles/abstracts' as *;
+
+.card {
+  background: color(card);
+}
+
+.bordered {
+  border: 1px solid var(--card-border);
+}
+
+.selected {
+  border: 1.5px solid color(accent);
+  box-shadow: 0 0 0 3px color(accent-bg);
+}
+
+.interactive {
+  cursor: pointer;
+  transition: transform 0.06s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.radius-sm {
+  border-radius: radius(sm);
+}
+.radius-md {
+  border-radius: radius(md);
+}
+.radius-lg {
+  border-radius: radius(lg);
+}
+.radius-xl {
+  border-radius: radius(xl);
+}
+.radius-pill {
+  border-radius: radius(pill);
+}
+
+.shadow-card {
+  box-shadow: shadow(card);
+}
+.shadow-float {
+  box-shadow: shadow(float);
+}
