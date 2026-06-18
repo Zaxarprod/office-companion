@@ -56,7 +56,7 @@ registerMock<CheckInReportInput, CheckInReportDto>('GET', '/check-in/report', (i
   const points = Array.from({ length: days }, (_, i) => {
     const date = new Date()
     date.setDate(date.getDate() - (days - 1 - i))
-    return { date: date.toISOString(), score: 3 + Math.round(Math.sin(i) + 1) }
+    return { date: date.toISOString(), score: Math.round(50 + 25 * Math.sin(i * 0.9)) }
   })
   return {
     period: input.period,

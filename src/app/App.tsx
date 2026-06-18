@@ -1,6 +1,6 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
 
-import { CheckInPage } from '~/pages/checkin'
+import { CheckInPage, CheckInReportPage } from '~/pages/checkin'
 import { CompatibilityPage } from '~/pages/compatibility'
 import { NotFoundPage } from '~/pages/error'
 import { HomePage } from '~/pages/home'
@@ -21,6 +21,7 @@ export const App = () => (
         <Route path='/profile' element={<ProfilePage />} />
       </Route>
       <Route path='/checkin' element={<CheckInPage />} />
+      <Route path='/checkin/report' element={<CheckInReportPage />} />
       <Route path='/salary' element={<SalaryPage />} />
       <Route path='/horoscope' element={<HoroscopePage />} />
       <Route path='/compatibility' element={<CompatibilityPage />} />

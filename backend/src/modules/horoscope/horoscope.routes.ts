@@ -18,6 +18,7 @@ export const horoscopeRoutes = async (app: FastifyInstance) => {
       birthTime: query.birthTime || undefined,
       lat: query.lat ? Number(query.lat) : undefined,
       lon: query.lon ? Number(query.lon) : undefined,
+      tz: query.tz ? Number(query.tz) : undefined,
       date: query.date || undefined,
     }
     return horoscopeService.get(input)

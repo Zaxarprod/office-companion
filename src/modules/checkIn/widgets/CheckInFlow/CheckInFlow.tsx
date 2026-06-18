@@ -28,9 +28,10 @@ export const CheckInFlow = () => {
   const [result, setResult] = useState<CheckIn | null>(null)
 
   const goHome = () => navigate('/')
+  const goDynamics = () => navigate('/checkin/report')
 
   if (result) {
-    return <CheckInDone checkIn={result} onHome={goHome} onDynamics={goHome} />
+    return <CheckInDone checkIn={result} onHome={goHome} onDynamics={goDynamics} />
   }
 
   if (!questions || questions.length === 0) {

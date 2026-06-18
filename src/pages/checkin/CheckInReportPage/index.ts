@@ -1,2 +1,1 @@
-export { CheckInPage } from './CheckInPage'
 export { CheckInReportPage } from './CheckInReportPage'
