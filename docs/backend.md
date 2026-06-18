@@ -120,7 +120,7 @@ client → POST /auth/telegram { initData }
 | **City** | справочник городов (поиск + место рождения) | name, region?, country?, lat?, lon?, tz? | — | ✅ (сид: ~25 городов РФ с координатами и поясом) |
 | **RefreshToken** | отзыв сессий, много устройств | tokenHash, expiresAt | →User | позже |
 | **DailySnapshot** | кэш посчитанных метрик за день | date, jsonb | →User | позже |
-| **MarketSalary** | справочник вилок (role/grade/city) | roleKey, grade, scope, city?, region?, median, p25, p75, sampleSize, source | — | ✅ (ручной сид: ~12 ролей × 4 грейда × 3 города + by-country; не-IT grade='all') |
+| **MarketSalary** | кэш вилок из HH.ru (role/grade/city) | roleKey, grade, scope, city?, region?, median, p25, p75, sampleSize, source, updatedAt | — | ✅ (наполняется live из HH + `db:refresh-salaries`; freshness-gate 1 год; ручной сид удалён) |
 | **Subscription** | реальная подписка (платежи) | plan, status, expiresAt | →User | позже (пока `isPro`) |
 
 Стабильность для аналитики: `Question.key` не меняем под одной формулировкой — тренды считаются по `key` во времени.
@@ -241,27 +241,32 @@ model MarketSalary {
 
 **LLM строго ограничен** классификацией во входной справочник. Числа зарплаты ИИ никогда не генерирует.
 
-### Graceful widening (расширение охвата)
+### Источник данных: HH.ru live (приоритет) → свежий кэш в БД
 
-Чистая функция `widenLookup` (инъекция lookup-функции → тестируется без БД):
+Зарплаты считаются из **живых вакансий HH.ru** — это приоритетный источник. Порядок в `getFork`:
 
-```
-город → регион → страна → (если grade задан) повтор без grade-фильтра
-```
+1. **HH.ru live** (`resolveSalaryFromHh`, `hh.resolve.ts`) — запрос к `GET api.hh.ru/vacancies` по `professional_role` (или `text` для не-IT), `experience` (грейд→опыт), `area` (город→country), `only_with_salary=true`, `period=30` (только вакансии за последние 30 дней → всегда актуально). Расширение охвата: `город+грейд → Россия+грейд → Россия+без грейда`; берётся первый результат с выборкой ≥ `MIN_SAMPLE` (5). Успех кэшируется в `MarketSalary` с `source='hh-live'` (best-effort).
+2. **Откат — свежий кэш/данные в БД** (`widenLookup` + `dbLookup`): `город → регион → страна → (если grade задан) без grade`. **Только записи не старше года** (`DATA_MAX_AGE_MS`) — устаревшее не отдаём.
+3. **Нет нигде** → `AppError(422, 'NO_DATA')`. Числа не выдумываем.
 
-Каждый уровень добавляет `grade: { in: [requestedGrade, 'all'] }`, что автоматически подхватывает not-graded записи (grade='all'). При любом расширении `coverageLabel` честно сообщает, откуда данные: `«по Москве · habr-manual-seed»` vs `«по России · habr-manual-seed»`.
+**Расчёт зарплаты из вакансии** (`hh.logic.ts`, чистые функции, покрыты тестами): середина вилки `from..to`; `gross→net` по НДФЛ 13% (`gross=false` — берём как есть, `gross=null` — считаем gross); только рубли (RUR/RUB), прочие валюты пропускаем; санитарный отсев < 10 000 ₽ и > 3 000 000 ₽. Агрегат — медиана/p25/p75 (`percentile`, линейная интерполяция).
 
-**Если данных нет совсем** → `AppError(422, 'NO_DATA')`. Числа не выдумываем.
+> **Egress:** хост `api.hh.ru` должен быть в network-allowlist окружения, иначе live-слой молча откатится к БД. Отключается флагом `HH_ENABLED=0`. User-Agent — `HH_USER_AGENT` (HH требует осмысленный UA).
 
 ### Источники данных и оговорки о честности
 
 | Источник | Ярлык | Для чего |
 |---|---|---|
-| `habr-manual-seed` | Habr Career | IT-роли: ~12 ключевых ролей × 4-5 грейдов × Москва + Санкт-Петербург + Екатеринбург + Новосибирск + по России |
-| `rosstat-manual-seed` | Росстат | Не-IT-роли: по России, grade='all' + Москва отдельно |
-| `hh-live` | hh.ru (live) | Будущий live-слой за флагом `HH_ENABLED` (не реализован) |
+| `hh-live` | HH.ru | **Основной.** Живые вакансии за последние 30 дней; кэшируются в `MarketSalary`. |
+| `habr-manual-seed` / `rosstat-manual-seed` | — | Исторический ручной сид (удалён из `seed.ts`). Read-time freshness-gate (1 год) гарантирует, что старое не показывается. |
 
-Ручной сид — правдоподобный baseline по открытым данным ~2024. Числа помечены источником; точность не гарантируется. `coverageLabel` в ответе явно сообщает источник пользователю.
+`coverageLabel` в ответе явно сообщает источник и охват пользователю: `«по Москве · HH.ru»` / `«по России · HH.ru»`.
+
+### Актуальность данных и наполнение (`db:refresh-salaries`)
+
+- **Read-time gate:** `dbLookup` и `getCities` отдают только записи `updatedAt` не старше `DATA_MAX_AGE_MS` (1 год).
+- **Скрипт `yarn db:refresh-salaries`** (`prisma/refresh-salaries.ts`): удаляет всё старше года и заново наполняет `MarketSalary` живыми данными HH по ролям × {РФ, Москва, СПб, Екб, Нск} × грейдам. Запускать периодически (cron) для тёплого кэша. Требует доступ к `api.hh.ru` и `DATABASE_URL`.
+- Ручной сид зарплат из `seed.ts` **удалён** — единственный источник чисел теперь HH (live + кэш).
 
 ### Синтез гистограммы и математика «ниже медианы»
 
@@ -270,6 +275,7 @@ model MarketSalary {
 - `buildYouBlock(currentSalary, median, p25, p75)` — `diff`, `diffText` («на Nк ниже/выше медианы»), `bucketIndex` в пределах `[0, 9]`.
 - `computeQuotaLeft(used, isPro)` — free: 3 прогона / 30 дней; Pro: лимита нет.
 - `widenLookup(lookupFn, roleKey, grade, city)` — чистая, инъектируемый lookup.
+- HH-слой: `extractNetSalary`, `percentile`, `aggregateSalaries`, `buildVacancyCards`, `cityToAreaId`, `buildVacanciesQuery` (`hh.logic.ts`); `fetchVacancies` (`hh.client.ts`, инъекция fetch); `resolveSalaryFromHh` (`hh.resolve.ts`, инъекция fetch). Покрыто unit-тестами (`hh.test.ts`, `hh.resolve.test.ts`).
 
 ### Квота
 
@@ -280,6 +286,7 @@ model MarketSalary {
 1. ~~Перевести фронт на `contracts` и выключить `mocked`~~ ✅ Сделано. `@contracts/*` подключён, `request.ts` ходит в реальный API (мок остаётся под `VITE_API_MOCKS=true`). `transform`-мапперы на месте.
 2. ~~Полный чек-ин (вопросы по дням + порядок прохождения + сохранение ответов) + dev-заглушка авторизации~~ ✅ Сделано (см. «Чек-ин: хранение и порядок прохождения» и `AUTH_DEV`). Реализованы `GET /check-in/questions`, `POST /check-in`, `GET /check-in/today`.
 3. ~~Гороскоп и совместимость~~ ✅ Сделано (см. «Гороскоп и совместимость: астро-движок»): `GET /horoscope`, `POST /compatibility`, Уровни A/B на `astronomy-engine`. Доп. задел: асцендент (координаты места) + сбор времени/места цели в форме совместимости.
-4. ~~Зарплаты~~ ✅ Сделано: `POST /salary/fork`, `POST /salary/cities`, `GET /salary/quota`. Канонический справочник 25+ ролей, 4-уровневый резолвер (alias → substring → word-overlap → DeepSeek за флагом), graceful widening (город→регион→РФ→grade), ручной сид ~130 записей, unit-тесты 41 кейс, `useProfileBackfill` на сабмите.
+4. ~~Зарплаты~~ ✅ Сделано: `POST /salary/fork`, `POST /salary/cities`, `GET /salary/quota`. Канонический справочник 25+ ролей, 4-уровневый резолвер (alias → substring → word-overlap → DeepSeek за флагом), graceful widening, `useProfileBackfill` на сабмите.
+4b. ~~Live-данные HH.ru~~ ✅ Сделано: `api.hh.ru/vacancies` как приоритетный источник (live → свежий кэш в БД → 422), gross→net, отсев валют/мусора, медиана/квартили, реальные карточки вакансий, кэш `source='hh-live'`, read-time freshness-gate (1 год), скрипт `db:refresh-salaries` (чистит старое + наполняет из HH), ручной сид зарплат удалён. Требует `api.hh.ru` в egress-allowlist. Unit-тесты: `hh.test.ts`, `hh.resolve.test.ts`.
 4. Метрики/отчёты чек-ина и индекс выгорания (`check-in/report`, `metrics/daily`, `check-in/access` — пока моканы на фронте). См. стратегию вопросов выгорания.
 5. `RefreshToken` + `/auth/refresh` + `/logout`, обработка 401 на фронте, реальные платежи (`Subscription`).

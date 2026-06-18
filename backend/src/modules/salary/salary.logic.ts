@@ -75,6 +75,12 @@ export const buildYouBlock = (
 export const FREE_QUOTA = 3
 export const QUOTA_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
 
+/**
+ * Максимальный возраст записи о зарплате, которую ещё можно показывать.
+ * Старше — считается неактуальной и не отдаётся (источник правды — живой HH).
+ */
+export const DATA_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000
+
 /** Remaining free uses in the current quota window. */
 export const computeQuotaLeft = (usedInWindow: number, isPro: boolean): number => {
   if (isPro) return 999

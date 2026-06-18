@@ -6,10 +6,13 @@ import type {
   VacancyDto,
 } from '@contracts/salary'
 
+import { config } from '../../config'
 import { AppError } from '../../lib/errors'
 import { prisma } from '../../prisma'
 
+import { resolveSalaryFromHh, type HhResolved } from './hh.resolve'
 import {
+  DATA_MAX_AGE_MS,
   FREE_QUOTA,
   QUOTA_WINDOW_MS,
   buildYouBlock,
@@ -20,7 +23,7 @@ import {
   type SalaryRow,
 } from './salary.logic'
 import { resolveGrade, resolveRole } from './salary.resolver'
-import { ROLES } from './salary.roles'
+import { ROLES, type Grade } from './salary.roles'
 
 // Seed vacancies shown in results (PRO-tizered in UI, so these are illustrative).
 const SEED_VACANCIES: Record<string, VacancyDto[]> = {
@@ -62,18 +65,23 @@ const DEFAULT_VACANCIES: VacancyDto[] = [
   { id: 'v-d3', role: 'Ведущий специалист', company: 'Компания В', source: 'hh', salary: 350_000, diff: 0 },
 ]
 
-/** DB-backed lookup function — passed into pure widenLookup */
+/**
+ * DB-backed lookup — passed into pure widenLookup.
+ * Свежесть: отдаём только записи не старше DATA_MAX_AGE_MS (актуальность данных).
+ */
 const dbLookup: LookupFn = async (
   roleKey,
   grades,
   scope,
   location,
 ): Promise<SalaryRow | null> => {
+  const freshAfter = new Date(Date.now() - DATA_MAX_AGE_MS)
   const row = await prisma.marketSalary.findFirst({
     where: {
       roleKey,
       grade: { in: grades },
       scope,
+      updatedAt: { gte: freshAfter },
       ...location,
     },
     orderBy: { updatedAt: 'desc' },
@@ -83,9 +91,53 @@ const dbLookup: LookupFn = async (
     median: row.median,
     p25: row.p25,
     p75: row.p75,
-    source: row.source,
+    // Человекочитаемый ярлык источника для coverageLabel.
+    source: row.source === 'hh-live' ? 'HH.ru' : row.source,
     city: row.city,
     region: row.region,
+  }
+}
+
+// ── HH.ru как приоритетный живой источник ────────────────────────────────────
+
+/** Обёртка над resolveSalaryFromHh с учётом флага config.hh.enabled. */
+const resolveFromHh = async (params: {
+  hhRoleId?: number
+  text: string
+  grade: Grade | null
+  city: string
+}): Promise<HhResolved | null> => {
+  if (!config.hh.enabled) return null
+  return resolveSalaryFromHh(params)
+}
+
+/** Кэшируем живой результат HH в БД (best-effort): свежий fallback на случай недоступности HH. */
+const cacheHhResult = async (roleKey: string, hh: HhResolved): Promise<void> => {
+  try {
+    const where = {
+      roleKey,
+      // Грейд берём фактический (после widening), а не запрошенный — иначе
+      // данные «по всем грейдам» осели бы под конкретным грейдом.
+      grade: hh.grade ?? 'all',
+      scope: hh.scope,
+      city: hh.scope === 'city' ? hh.city : null,
+      region: null,
+    }
+    const existing = await prisma.marketSalary.findFirst({ where })
+    const data = {
+      median: hh.median,
+      p25: hh.p25,
+      p75: hh.p75,
+      sampleSize: hh.sampleSize,
+      source: 'hh-live',
+    }
+    if (existing) {
+      await prisma.marketSalary.update({ where: { id: existing.id }, data })
+    } else {
+      await prisma.marketSalary.create({ data: { ...where, ...data } })
+    }
+  } catch {
+    // Кэш — не критичен: молча игнорируем сбой записи.
   }
 }
 
@@ -112,24 +164,51 @@ export const salaryService = {
       Promise.resolve(resolveGrade(input.grade)),
     ])
 
-    let widened: Awaited<ReturnType<typeof widenLookup>> = null
-    if (roleKey) {
-      widened = await widenLookup(dbLookup, roleKey, grade, input.city)
+    const roleMeta = roleKey ? ROLES.find((r) => r.key === roleKey) : undefined
+
+    // 1. Приоритет — живые данные HH.ru.
+    const hh = await resolveFromHh({
+      hhRoleId: roleMeta?.hhRoleId,
+      text: roleMeta?.label ?? input.profession,
+      grade,
+      city: input.city,
+    })
+
+    let median: number
+    let p25: number
+    let p75: number
+    let coverageLabel: string
+    let vacancies: VacancyDto[]
+
+    if (hh) {
+      median = hh.median
+      p25 = hh.p25
+      p75 = hh.p75
+      coverageLabel = hh.coverageLabel
+      vacancies = hh.vacancies
+      // Кэшируем (best-effort) — только для распознанной роли.
+      if (roleKey) {
+        await cacheHhResult(roleKey, hh)
+      }
+    } else {
+      // 2. Откат — свежий кэш/сид в БД (не старше года).
+      const widened = roleKey ? await widenLookup(dbLookup, roleKey, grade, input.city) : null
+      if (!widened) {
+        throw new AppError(
+          422,
+          'NO_DATA',
+          `Нет данных для «${input.profession}» в «${input.city}» — попробуй другую профессию или город`,
+        )
+      }
+      median = widened.row.median
+      p25 = widened.row.p25
+      p75 = widened.row.p75
+      coverageLabel = widened.coverageLabel
+      const rawVacancies = SEED_VACANCIES[roleKey ?? ''] ?? DEFAULT_VACANCIES
+      vacancies = rawVacancies.map((v) => ({ ...v, diff: v.salary - median }))
     }
 
-    if (!widened) {
-      throw new AppError(
-        422,
-        'NO_DATA',
-        `Нет данных для «${input.profession}» в «${input.city}» — попробуй другую профессию или город`,
-      )
-    }
-
-    const { row, coverageLabel } = widened
-    const { median, p25, p75 } = row
     const distribution = synthesizeDistribution(median, p25, p75)
-
-    const roleMeta = ROLES.find((r) => r.key === roleKey)
     const gradeCapital = grade ? grade.charAt(0).toUpperCase() + grade.slice(1) : null
     const roleLabel = gradeCapital
       ? `${gradeCapital} · ${roleMeta?.label ?? input.profession}`
@@ -139,9 +218,6 @@ export const salaryService = {
       input.currentSalary != null
         ? buildYouBlock(input.currentSalary, median, p25, p75)
         : undefined
-
-    const rawVacancies = SEED_VACANCIES[roleKey ?? ''] ?? DEFAULT_VACANCIES
-    const vacancies = rawVacancies.map((v) => ({ ...v, diff: v.salary - median }))
 
     await prisma.usageEvent.create({ data: { userId, tool: 'salary' } })
 
@@ -158,8 +234,14 @@ export const salaryService = {
 
   getCities: async (_userId: string, _input: SalaryForkInput): Promise<CityComparisonDto[]> => {
     // PRO tizzer: returns city-scope senior rows sorted by median desc.
+    // Только свежие записи (не старше года) — иначе вводим в заблуждение.
+    const freshAfter = new Date(Date.now() - DATA_MAX_AGE_MS)
     const rows = await prisma.marketSalary.findMany({
-      where: { scope: 'city', grade: { in: ['senior', 'all'] } },
+      where: {
+        scope: 'city',
+        grade: { in: ['senior', 'all'] },
+        updatedAt: { gte: freshAfter },
+      },
       orderBy: { median: 'desc' },
       take: 6,
     })

@@ -32,7 +32,7 @@ registerMock<SalaryForkInput, SalaryFork>('POST', '/salary/fork', (input) => {
       { id: 'v2', role: 'Frontend Lead', company: 'Яндекс', source: 'hh', salary: 480_000, diff: 190_000 },
       { id: 'v3', role: 'Senior React', company: 'Тинькофф', source: 'hh', salary: 390_000, diff: 100_000 },
     ],
-    coverageLabel: `по ${input.city} · ручной сид`,
+    coverageLabel: `по ${input.city} · HH.ru`,
   }
 })
 
