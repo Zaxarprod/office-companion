@@ -33,6 +33,8 @@ export interface SalaryForkDto {
     diffText: string
   }
   vacancies: VacancyDto[]
+  /** Ярлык охвата и источника: «по Москве · Habr Career» */
+  coverageLabel: string
 }
 
 export interface CityComparisonDto {

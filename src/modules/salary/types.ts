@@ -36,6 +36,8 @@ export interface SalaryFork {
     diffText: string
   }
   vacancies: Vacancy[]
+  /** Ярлык охвата и источника: «по Москве · Habr Career» */
+  coverageLabel: string
 }
 
 // ——— POST /salary/cities (PRO) ———

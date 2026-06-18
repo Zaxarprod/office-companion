@@ -16,19 +16,16 @@ export const getSalaryFork = createMutation<SalaryForkInput, SalaryFork, SalaryF
   url: '/salary/fork',
   method: 'POST',
   transform: (output) => output,
-  mocked: true,
 })
 
 export const getSalaryCities = createMutation<SalaryForkInput, CityComparison[], CityComparison[]>({
   url: '/salary/cities',
   method: 'POST',
   transform: (output) => output,
-  mocked: true,
 })
 
 export const getSalaryQuota = createQuery<void, SalaryQuotaDto, SalaryQuota>({
   url: '/salary/quota',
   method: 'GET',
   transform: mapQuota,
-  mocked: true,
 })
