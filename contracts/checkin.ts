@@ -14,6 +14,7 @@ export interface QuestionDto {
   highText: string
   image: string
   answers: CheckInAnswerOptionDto[]
+  group: string
 }
 
 export interface CheckInAnswerInput {
@@ -25,18 +26,20 @@ export interface SubmitCheckInInput {
   answers: CheckInAnswerInput[]
 }
 
+export interface DailyMetricsDto {
+  sleep: number      // 0–100, higher = better
+  burnout: number    // 0–100, higher = more risk
+  stress: number     // 0–100, higher = more stressed
+  engagement: number // 0–100, higher = better
+  wellbeing: number  // 0–100, higher = better
+}
+
 export interface CheckInDto {
   id: string
   date: ISODateString
   answers: CheckInAnswerInput[]
   advice: string
-}
-
-export interface DailyMetricsDto {
-  sleepHours: number
-  condition: number
-  burnout: number
-  rest: number
+  metrics: DailyMetricsDto
 }
 
 export type ReportPeriod = 'week' | 'month'

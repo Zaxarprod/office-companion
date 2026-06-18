@@ -10,6 +10,7 @@ import type {
   CheckInReportDto,
   CheckInReportInput,
   DailyMetrics,
+  DailyMetricsDto,
   SubmitCheckInInput,
 } from '../types'
 
@@ -33,21 +34,18 @@ export const getCheckInReport = createQuery<CheckInReportInput, CheckInReportDto
   url: '/check-in/report',
   method: 'GET',
   transform: mapReport,
-  mocked: true,
 })
 
-export const getDailyMetrics = createQuery<void, DailyMetrics, DailyMetrics>({
+export const getDailyMetrics = createQuery<void, DailyMetricsDto | null, DailyMetrics | null>({
   url: '/metrics/daily',
   method: 'GET',
   transform: (output) => output,
-  mocked: true,
 })
 
 export const getCheckInAccess = createQuery<void, CheckInAccessDto, CheckInAccess>({
   url: '/check-in/access',
   method: 'GET',
   transform: mapAccess,
-  mocked: true,
 })
 
 export const getCheckInQuestions = createQuery<void, CheckInQuestion[], CheckInQuestion[]>({

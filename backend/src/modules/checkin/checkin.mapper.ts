@@ -1,6 +1,5 @@
 import type { CheckIn, CheckInAnswer, Question } from '@prisma/client'
-
-import type { CheckInDto, QuestionDto } from '@contracts/checkin'
+import type { CheckInDto, DailyMetricsDto, QuestionDto } from '@contracts/checkin'
 
 export const questionToDto = (question: Question): QuestionDto => ({
   id: question.key,
@@ -10,10 +9,14 @@ export const questionToDto = (question: Question): QuestionDto => ({
   lowText: question.lowText,
   highText: question.highText,
   image: question.image,
+  group: question.group ?? '',
   answers: Array.from({ length: question.scaleMax }, (_, index) => ({ value: index + 1 })),
 })
 
-export const checkInToDto = (checkIn: CheckIn & { answers: CheckInAnswer[] }): CheckInDto => ({
+export const checkInToDto = (
+  checkIn: CheckIn & { answers: CheckInAnswer[] },
+  metrics: DailyMetricsDto,
+): CheckInDto => ({
   id: checkIn.id,
   date: checkIn.createdAt.toISOString(),
   advice: checkIn.advice,
@@ -21,4 +24,5 @@ export const checkInToDto = (checkIn: CheckIn & { answers: CheckInAnswer[] }): C
     questionKey: answer.questionKey,
     value: answer.value,
   })),
+  metrics,
 })
