@@ -26,13 +26,13 @@ export const ROLES: CanonicalRole[] = [
       'php dev', 'ruby dev', 'java developer', 'python developer',
       'go developer', 'серверный разработчик',
     ],
-    hhRoleId: 160,
+    // HH не выделяет backend в отдельную роль — text-поиск даёт более специфичную выборку.
   },
   {
     key: 'fullstack',
     label: 'Fullstack-разработчик',
     aliases: ['fullstack', 'фуллстек', 'full stack', 'full-stack', 'фулл-стек'],
-    hhRoleId: 12,
+    // HH не выделяет fullstack в отдельную роль — text-поиск.
   },
   {
     key: 'mobile',
@@ -42,7 +42,7 @@ export const ROLES: CanonicalRole[] = [
       'android developer', 'swift', 'kotlin', 'react native', 'flutter',
       'мобильный разработчик',
     ],
-    hhRoleId: 164,
+    // HH не выделяет mobile в отдельную роль — text-поиск.
   },
   {
     key: 'devops',
@@ -51,7 +51,7 @@ export const ROLES: CanonicalRole[] = [
       'devops', 'девопс', 'sre', 'site reliability', 'cloud engineer',
       'kubernetes', 'docker', 'ci/cd', 'инфраструктурщик',
     ],
-    hhRoleId: 107,
+    hhRoleId: 160, // DevOps-инженер
   },
   {
     key: 'datascience',
@@ -71,7 +71,7 @@ export const ROLES: CanonicalRole[] = [
       'bi analyst', 'bi-аналитик', 'tableau', 'power bi',
       'дата-аналитик',
     ],
-    hhRoleId: 10,
+    hhRoleId: 156, // BI-аналитик, аналитик данных (точнее, чем 10 «Аналитик»)
   },
   {
     key: 'dataengineer',
@@ -98,7 +98,7 @@ export const ROLES: CanonicalRole[] = [
       'product manager', 'продуктовый менеджер', 'продакт',
       'продуктолог', 'head of product',
     ],
-    hhRoleId: 68,
+    hhRoleId: 73, // Менеджер продукта
   },
   {
     key: 'designer',
@@ -108,7 +108,7 @@ export const ROLES: CanonicalRole[] = [
       'ux designer', 'ui designer', 'продуктовый дизайнер',
       'figma', 'графический дизайнер',
     ],
-    hhRoleId: 270,
+    hhRoleId: 34, // Дизайнер, художник
   },
   {
     key: 'projectmanager',
@@ -117,7 +117,7 @@ export const ROLES: CanonicalRole[] = [
       'project manager', 'проектный менеджер', 'руководитель проекта',
       'scrum master', 'скрам мастер', 'agile coach',
     ],
-    hhRoleId: 141,
+    hhRoleId: 107, // Руководитель проектов
   },
   {
     key: 'businessanalyst',
@@ -126,6 +126,7 @@ export const ROLES: CanonicalRole[] = [
       'business analyst', 'бизнес аналитик', 'бизнес-аналитик',
       'системный аналитик', 'system analyst', 'аналитик требований',
     ],
+    hhRoleId: 150, // Бизнес-аналитик
   },
   {
     key: 'sysadmin',
@@ -134,7 +135,7 @@ export const ROLES: CanonicalRole[] = [
       'sysadmin', 'сисадмин', 'системный администратор',
       'linux admin', 'windows admin', 'network admin',
     ],
-    hhRoleId: 203,
+    hhRoleId: 113, // Системный администратор
   },
   {
     key: 'dba',
@@ -151,7 +152,7 @@ export const ROLES: CanonicalRole[] = [
       'security', 'безопасность', 'информационная безопасность',
       'иб', 'ибшник', 'pentester', 'пентестер', 'soc analyst',
     ],
-    hhRoleId: 192,
+    hhRoleId: 116, // Специалист по информационной безопасности
   },
   {
     key: 'architect',
@@ -160,7 +161,7 @@ export const ROLES: CanonicalRole[] = [
       'architect', 'архитектор', 'software architect',
       'system architect', 'solution architect', 'enterprise architect',
     ],
-    hhRoleId: 25,
+    hhRoleId: 104, // Руководитель группы разработки (ближайшая категория HH для архитекторов)
   },
   // Офис / не-IT
   {
