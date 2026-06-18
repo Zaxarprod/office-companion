@@ -1,4 +1,5 @@
-import { Button, Card, Grid, HStack, IconBadge, Layout, Text, VStack } from '~/shared/ui'
+import { Button, Card, Grid, IconBadge, Layout, Text, VStack } from '~/shared/ui'
+import type { IconBadgeTone, IconName } from '~/shared/ui'
 
 import type { CheckInDoneProps } from './types'
 
@@ -12,9 +13,24 @@ const formatStamp = (date: Date) => {
   return `${day} · ${time}`
 }
 
-export const CheckInDone = ({ checkIn, questions, onHome, onDynamics }: CheckInDoneProps) => {
-  const byKey = new Map(questions.map((question) => [question.id, question]))
-  const columns = Math.min(Math.max(checkIn.answers.length, 1), 5)
+const pct = (v: number) => `${Math.round(v)}%`
+
+interface MetricCard {
+  icon: IconName
+  tone: IconBadgeTone
+  label: string
+  value: string
+}
+
+export const CheckInDone = ({ checkIn, onHome, onDynamics }: CheckInDoneProps) => {
+  const m = checkIn.metrics
+  const cards: MetricCard[] = [
+    { icon: 'moon',        tone: 'moon',  label: 'Сон',           value: pct(m.sleep) },
+    { icon: 'flame',       tone: 'coral', label: 'Выгорание',     value: pct(m.burnout) },
+    { icon: 'zap',         tone: 'ochre', label: 'Стресс',        value: pct(m.stress) },
+    { icon: 'zap',         tone: 'sage',  label: 'Вовлечённость', value: pct(m.engagement) },
+    { icon: 'smile',       tone: 'heart', label: 'Самочувствие',  value: pct(m.wellbeing) },
+  ]
 
   return (
     <Layout.Root standalone shapeVariant={4} shapeColor='mint'>
@@ -34,26 +50,18 @@ export const CheckInDone = ({ checkIn, questions, onHome, onDynamics }: CheckInD
       </Layout.Header>
 
       <Layout.Body spacing={14}>
-        <Grid columns={columns} gap={8}>
-          {checkIn.answers.map((answer) => {
-            const question = byKey.get(answer.questionKey)
-            const max = question?.answers.length ?? 5
-            return (
-              <Card key={answer.questionKey} padding={10} radius='md'>
-                <VStack gap={3} align='center'>
-                  <HStack gap={1} align='baseline'>
-                    <Text variant='subhead'>{answer.value}</Text>
-                    <Text variant='small' color='ink-faint'>
-                      /{max}
-                    </Text>
-                  </HStack>
-                  <Text variant='small' color='ink-soft'>
-                    {question?.helperText ?? answer.questionKey}
-                  </Text>
-                </VStack>
-              </Card>
-            )
-          })}
+        <Grid columns={5} gap={8}>
+          {cards.map((card) => (
+            <Card key={card.label} padding={10} radius='md'>
+              <VStack gap={4} align='center'>
+                <IconBadge icon={card.icon} tone={card.tone} size={24} radius={7} iconSize={12} />
+                <Text variant='subhead'>{card.value}</Text>
+                <Text variant='small' color='ink-soft'>
+                  {card.label}
+                </Text>
+              </VStack>
+            </Card>
+          ))}
         </Grid>
 
         <Card>

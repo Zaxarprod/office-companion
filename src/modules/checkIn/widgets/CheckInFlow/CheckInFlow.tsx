@@ -13,7 +13,7 @@ import { CheckInDone } from '../../components/CheckInDone'
 import { CheckInMascot } from '../../components/CheckInMascot'
 import { CheckInProgress } from '../../components/CheckInProgress'
 import { CheckInScale } from '../../components/CheckInScale'
-import type { CheckIn, CheckInQuestion, SubmitCheckInInput } from '../../types'
+import type { CheckIn, SubmitCheckInInput } from '../../types'
 
 export const CheckInFlow = () => {
   const navigate = useNavigate()
@@ -26,21 +26,11 @@ export const CheckInFlow = () => {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [result, setResult] = useState<CheckIn | null>(null)
-  // Снимок вопросов пройденного дня — для подписей на экране «Готово»
-  // (после сабмита getCheckInQuestions рефетчит уже следующий день).
-  const [doneQuestions, setDoneQuestions] = useState<CheckInQuestion[]>([])
 
   const goHome = () => navigate('/')
 
   if (result) {
-    return (
-      <CheckInDone
-        checkIn={result}
-        questions={doneQuestions}
-        onHome={goHome}
-        onDynamics={goHome}
-      />
-    )
+    return <CheckInDone checkIn={result} onHome={goHome} onDynamics={goHome} />
   }
 
   if (!questions || questions.length === 0) {
@@ -74,7 +64,6 @@ export const CheckInFlow = () => {
     mutate(payload, {
       onSuccess: (checkIn) => {
         setResult(checkIn)
-        setDoneQuestions(questions)
         invalidateToday()
         invalidateMetrics()
         invalidateQuestions()

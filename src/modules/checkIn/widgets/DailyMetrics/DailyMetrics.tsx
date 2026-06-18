@@ -6,16 +6,16 @@ import type { IconBadgeTone, IconName } from '~/shared/ui'
 import { getDailyMetrics } from '../../api/checkIn'
 
 const DASH = '—'
-const pct = (value: number) => `${Math.round(value * 100)}%`
+const pct = (value: number) => `${Math.round(value)}%`
 
 export const DailyMetrics = () => {
   const { data } = getDailyMetrics.useQuery()
 
   const items: { icon: IconName; tone: IconBadgeTone; value: string; label: string }[] = [
-    { icon: 'moon', tone: 'moon', value: data ? `${data.sleepHours}ч` : DASH, label: 'Сон' },
-    { icon: 'smile', tone: 'heart', value: data ? pct(data.condition) : DASH, label: 'Сост.' },
-    { icon: 'flame', tone: 'coral', value: data ? pct(data.burnout) : DASH, label: 'Выгор.' },
-    { icon: 'sofa', tone: 'ochre', value: data ? pct(data.rest) : DASH, label: 'Отдых' },
+    { icon: 'moon',  tone: 'moon',  value: data ? pct(data.sleep)      : DASH, label: 'Сон'    },
+    { icon: 'smile', tone: 'heart', value: data ? pct(data.wellbeing)   : DASH, label: 'Сост.'  },
+    { icon: 'flame', tone: 'coral', value: data ? pct(data.burnout)     : DASH, label: 'Выгор.' },
+    { icon: 'zap',   tone: 'ochre', value: data ? pct(data.stress)      : DASH, label: 'Стресс' },
   ]
 
   return (
