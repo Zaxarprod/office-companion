@@ -28,7 +28,7 @@ export const CheckInDone = ({ checkIn, onHome, onDynamics }: CheckInDoneProps) =
     { icon: 'moon',        tone: 'moon',  label: 'Сон',           value: pct(m.sleep) },
     { icon: 'flame',       tone: 'coral', label: 'Выгорание',     value: pct(m.burnout) },
     { icon: 'zap',         tone: 'ochre', label: 'Стресс',        value: pct(m.stress) },
-    { icon: 'zap',         tone: 'sage',  label: 'Вовлечённость', value: pct(m.engagement) },
+    { icon: 'sparkles',    tone: 'sage',  label: 'Вовлечённость', value: pct(m.engagement) },
     { icon: 'smile',       tone: 'heart', label: 'Самочувствие',  value: pct(m.wellbeing) },
   ]
 

@@ -15,6 +15,7 @@ export const userService = {
         birthTime: input.birthTime,
         country: input.country,
         city: input.city,
+        birthCity: input.birthCity,
         profession: input.profession,
         grade: input.grade,
         experienceYears: input.experienceYears,
