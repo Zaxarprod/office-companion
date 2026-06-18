@@ -28,7 +28,7 @@ import {
 } from '~/shared/ui'
 import type { ChipOption, DistributionBar, DurationValue } from '~/shared/ui'
 
-import { getSalaryFork } from '../../api/salary'
+import { getSalaryFork, getSalaryQuota } from '../../api/salary'
 import type { SalaryFork, SalaryForkInput, Vacancy } from '../../types'
 
 import styles from './SalaryTool.module.scss'
@@ -187,6 +187,8 @@ export const SalaryTool = () => {
   const navigate = useNavigate()
   const { data: me } = getMe.useQuery()
   const { mutate, data, isPending } = getSalaryFork.useMutation()
+  const invalidateQuota = getSalaryQuota.useInvalidate()
+  const { data: quota } = getSalaryQuota.useQuery()
   const backfill = useProfileBackfill()
 
   const [country, setCountry] = useState<string | null>(null)
@@ -227,15 +229,18 @@ export const SalaryTool = () => {
     if (!ready) {
       return
     }
-    mutate({
-      country: country ?? '',
-      city: city ?? '',
-      profession: profession ?? '',
-      grade,
-      experienceYears: experience.years ?? undefined,
-      experienceMonths: experience.months ?? undefined,
-      currentSalary: salary ?? undefined,
-    } satisfies SalaryForkInput)
+    mutate(
+      {
+        country: country ?? '',
+        city: city ?? '',
+        profession: profession ?? '',
+        grade,
+        experienceYears: experience.years ?? undefined,
+        experienceMonths: experience.months ?? undefined,
+        currentSalary: salary ?? undefined,
+      } satisfies SalaryForkInput,
+      { onSuccess: () => invalidateQuota() },
+    )
     backfill({
       country: country ?? undefined,
       city: city ?? undefined,
@@ -294,9 +299,27 @@ export const SalaryTool = () => {
       </Layout.Body>
 
       <Layout.Footer>
-        <Button iconRight='chevron-right' disabled={!ready} onClick={submit}>
-          Показать вилку
-        </Button>
+        {quota && quota.left === 0 ? (
+          <VStack gap={9}>
+            <Callout tone='coral'>
+              <Text variant='caption'>Лимит бесплатных запросов исчерпан. Сбросится в следующем месяце.</Text>
+            </Callout>
+            <Button iconLeft='crown' onClick={() => navigate('/premium')}>
+              Открыть PRO
+            </Button>
+          </VStack>
+        ) : (
+          <VStack gap={9}>
+            {quota && quota.left < quota.total && (
+              <Text variant='caption' color='ink-soft' align='center'>
+                Бесплатных запросов: {quota.left} из {quota.total}
+              </Text>
+            )}
+            <Button iconRight='chevron-right' disabled={!ready} onClick={submit}>
+              Показать вилку
+            </Button>
+          </VStack>
+        )}
       </Layout.Footer>
     </Layout.Root>
   )
