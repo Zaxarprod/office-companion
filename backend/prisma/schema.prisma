@@ -115,3 +115,25 @@ model City {
   tz      Int? // смещение от UTC в часах
   @@index([name])
 }
+
+// Рыночные зарплаты по роли, грейду и охвату. Источник — ручной сид или live-обновления.
+model MarketSalary {
+  id         String   @id @default(cuid())
+  roleKey    String
+  // grade: intern|junior|middle|senior|lead|all (all — без различия по грейду)
+  grade      String
+  // scope: city|region|country
+  scope      String
+  city       String?
+  region     String?
+  median     Int
+  p25        Int
+  p75        Int
+  sampleSize Int      @default(0)
+  // source: 'habr-manual-seed' | 'rosstat-manual-seed' | 'hh-live'
+  source     String   @default("manual-seed")
+  updatedAt  DateTime @updatedAt
+
+  @@index([roleKey, grade, scope])
+  @@index([scope, city])
+}

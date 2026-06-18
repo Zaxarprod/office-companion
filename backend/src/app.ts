@@ -7,6 +7,7 @@ import { cityRoutes } from './modules/city/city.routes'
 import { compatibilityRoutes } from './modules/compatibility/compatibility.routes'
 import { horoscopeRoutes } from './modules/horoscope/horoscope.routes'
 import { intentRoutes } from './modules/intent/intent.routes'
+import { salaryRoutes } from './modules/salary/salary.routes'
 import { userRoutes } from './modules/user/user.routes'
 import { registerAuth } from './plugins/auth'
 import { registerErrorHandler } from './plugins/error-handler'
@@ -29,6 +30,7 @@ export const buildApp = async () => {
       await api.register(cityRoutes)
       await api.register(horoscopeRoutes)
       await api.register(compatibilityRoutes)
+      await api.register(salaryRoutes)
     },
     { prefix: '/api/v1' },
   )

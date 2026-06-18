@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { CitySingleSelect } from '~/modules/city'
-import { ProfessionSelect, getMe } from '~/modules/user'
+import { ProfessionSelect, getMe, useProfileBackfill } from '~/modules/user'
 import {
   Button,
   Callout,
@@ -187,6 +187,7 @@ export const SalaryTool = () => {
   const navigate = useNavigate()
   const { data: me } = getMe.useQuery()
   const { mutate, data, isPending } = getSalaryFork.useMutation()
+  const backfill = useProfileBackfill()
 
   const [country, setCountry] = useState<string | null>(null)
   const [city, setCity] = useState<string | null>(null)
@@ -235,6 +236,14 @@ export const SalaryTool = () => {
       experienceMonths: experience.months ?? undefined,
       currentSalary: salary ?? undefined,
     } satisfies SalaryForkInput)
+    backfill({
+      country: country ?? undefined,
+      city: city ?? undefined,
+      profession: profession ?? undefined,
+      grade: grade || undefined,
+      experienceYears: experience.years ?? undefined,
+      experienceMonths: experience.months ?? undefined,
+    })
   }
 
   if (isPending) {

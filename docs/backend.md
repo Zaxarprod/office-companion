@@ -120,7 +120,7 @@ client → POST /auth/telegram { initData }
 | **City** | справочник городов (поиск + место рождения) | name, region?, country?, lat?, lon?, tz? | — | ✅ (сид: ~25 городов РФ с координатами и поясом) |
 | **RefreshToken** | отзыв сессий, много устройств | tokenHash, expiresAt | →User | позже |
 | **DailySnapshot** | кэш посчитанных метрик за день | date, jsonb | →User | позже |
-| **MarketSalary** | справочник вилок (role/grade/city) | median, p25, p75 | — | нужен источник данных |
+| **MarketSalary** | справочник вилок (role/grade/city) | roleKey, grade, scope, city?, region?, median, p25, p75, sampleSize, source | — | ✅ (ручной сид: ~12 ролей × 4 грейда × 3 города + by-country; не-IT grade='all') |
 | **Subscription** | реальная подписка (платежи) | plan, status, expiresAt | →User | позже (пока `isPro`) |
 
 Стабильность для аналитики: `Question.key` не меняем под одной формулировкой — тренды считаются по `key` во времени.
@@ -193,10 +193,93 @@ currentDay = (count(CheckIn where userId) % maxDay) + 1
 - env (`backend/.env`): `DATABASE_URL`, `BOT_TOKEN`, `JWT_SECRET`, `PORT`, `AUTH_DEV`. `AUTH_DEV=1` включает dev-заглушку авторизации: доступна стратегия логина `POST /auth/web` без Telegram, **и** guard сессии без токена подставляет фиксированного dev-юзера (`AuthIdentity provider:'web' externalId:'dev'`, find-or-create). Так фронт работает против живого бэка без настроенного Telegram. В проде `AUTH_DEV` выключен → без валидного Bearer-токена guard отдаёт 401.
 - Команды: `yarn db:generate` (Prisma client), `yarn db:migrate` (миграции), `yarn db:seed` (вопросы + города + dev-юзер), `yarn dev` (tsx watch), `yarn build`/`start`.
 
+## Инструмент зарплат («Сколько недоплачивают»)
+
+### Модель `MarketSalary`
+
+```prisma
+model MarketSalary {
+  id         String   @id @default(cuid())
+  roleKey    String                   // ключ из канонического справочника
+  grade      String                   // intern|junior|middle|senior|lead|all
+  scope      String                   // city|region|country
+  city       String?                  // для scope='city'
+  region     String?                  // для scope='region'
+  median     Int                      // ₽/мес
+  p25        Int
+  p75        Int
+  sampleSize Int      @default(0)
+  source     String   @default("manual-seed")  // 'habr-manual-seed'|'rosstat-manual-seed'|'hh-live'
+  updatedAt  DateTime @updatedAt
+}
+```
+
+**grade='all'** используется для не-IT ролей, где нет смысла делить по грейду (бухгалтер, юрист и т.д.). При поиске всегда передаём `grade: { in: [requestedGrade, 'all'] }`, поэтому grade='all' — это универсальный фоллбэк.
+
+### Эндпоинты зарплат
+
+| Метод | Путь | Что возвращает |
+|---|---|---|
+| `POST` | `/salary/fork` | `SalaryForkDto` — медиана, вилка, гистограмма, «ты ниже/выше медианы», примеры вакансий, ярлык охвата |
+| `POST` | `/salary/cities` | `CityComparisonDto[]` — сравнение медиан по городам (PRO-тизер) |
+| `GET` | `/salary/quota` | `SalaryQuotaDto` — сколько бесплатных прогонов осталось |
+
+Все три защищены `app.authenticate`. `POST /salary/fork` проверяет квоту (3 прогона / 30 дней), пишет `UsageEvent(tool:'salary')`.
+
+### Матчинг: справочник ролей и резолвер
+
+**Canonical roles** (~25+ ролей) в `salary.roles.ts`: `key`, `label`, `aliases[]`, `hhRoleId?`. Охватывает IT-роли (frontend, backend, fullstack, mobile, devops, datascience, dataanalyst, qa, productmanager, designer, businessanalyst, architect, security, sysadmin, dba…) и не-IT (accountant, hr, marketing, sales, lawyer, financialanalyst, officemanager, copywriter, customerservice).
+
+**Резолвер** (`salary.resolver.ts`) — чистая функция, работает без БД/сети:
+1. Нормализация: lowercase, trim, `ё → е`, схлопывание пробелов.
+2. Точное совпадение alias/key/label.
+3. Substring-матч (input ⊂ alias или alias ⊂ input).
+4. Word-overlap: общее слово ≥ 4 символов.
+5. LLM-фоллбэк: **только при наличии `DEEPSEEK_API_KEY`**; кэшируется по нормализованной строке; с таймаутом 5 с; graceful-fallback `null`.
+
+**Грейд-резолвер** аналогично: нормализация → точный алиас из `GRADE_ALIASES` (`джун → junior`, `тимлид → lead`, …) → substring-матч.
+
+**LLM строго ограничен** классификацией во входной справочник. Числа зарплаты ИИ никогда не генерирует.
+
+### Graceful widening (расширение охвата)
+
+Чистая функция `widenLookup` (инъекция lookup-функции → тестируется без БД):
+
+```
+город → регион → страна → (если grade задан) повтор без grade-фильтра
+```
+
+Каждый уровень добавляет `grade: { in: [requestedGrade, 'all'] }`, что автоматически подхватывает not-graded записи (grade='all'). При любом расширении `coverageLabel` честно сообщает, откуда данные: `«по Москве · habr-manual-seed»` vs `«по России · habr-manual-seed»`.
+
+**Если данных нет совсем** → `AppError(422, 'NO_DATA')`. Числа не выдумываем.
+
+### Источники данных и оговорки о честности
+
+| Источник | Ярлык | Для чего |
+|---|---|---|
+| `habr-manual-seed` | Habr Career | IT-роли: ~12 ключевых ролей × 4-5 грейдов × Москва + Санкт-Петербург + Екатеринбург + Новосибирск + по России |
+| `rosstat-manual-seed` | Росстат | Не-IT-роли: по России, grade='all' + Москва отдельно |
+| `hh-live` | hh.ru (live) | Будущий live-слой за флагом `HH_ENABLED` (не реализован) |
+
+Ручной сид — правдоподобный baseline по открытым данным ~2024. Числа помечены источником; точность не гарантируется. `coverageLabel` в ответе явно сообщает источник пользователю.
+
+### Синтез гистограммы и математика «ниже медианы»
+
+Чистые функции в `salary.logic.ts`:
+- `synthesizeDistribution(median, p25, p75)` — 10 бакетов, гауссова форма, пик на медиане.
+- `buildYouBlock(currentSalary, median, p25, p75)` — `diff`, `diffText` («на Nк ниже/выше медианы»), `bucketIndex` в пределах `[0, 9]`.
+- `computeQuotaLeft(used, isPro)` — free: 3 прогона / 30 дней; Pro: лимита нет.
+- `widenLookup(lookupFn, roleKey, grade, city)` — чистая, инъектируемый lookup.
+
+### Квота
+
+Таблица `UsageEvent(tool='salary')` — window 30 дней. Бесплатно: 3 прогона. `isPro` снимает лимит. `GET /salary/quota` считает на лету.
+
 ## Дальнейшие шаги
 
 1. ~~Перевести фронт на `contracts` и выключить `mocked`~~ ✅ Сделано. `@contracts/*` подключён, `request.ts` ходит в реальный API (мок остаётся под `VITE_API_MOCKS=true`). `transform`-мапперы на месте.
 2. ~~Полный чек-ин (вопросы по дням + порядок прохождения + сохранение ответов) + dev-заглушка авторизации~~ ✅ Сделано (см. «Чек-ин: хранение и порядок прохождения» и `AUTH_DEV`). Реализованы `GET /check-in/questions`, `POST /check-in`, `GET /check-in/today`.
-3. ~~Гороскоп и совместимость~~ ✅ Сделано (см. «Гороскоп и совместимость: астро-движок»): `GET /horoscope`, `POST /compatibility`, Уровни A/B на `astronomy-engine`. Остаётся **`salary`** — определить источник данных по вилкам. **← следующий шаг.** Доп. задел: асцендент (координаты места) + сбор времени/места цели в форме совместимости.
+3. ~~Гороскоп и совместимость~~ ✅ Сделано (см. «Гороскоп и совместимость: астро-движок»): `GET /horoscope`, `POST /compatibility`, Уровни A/B на `astronomy-engine`. Доп. задел: асцендент (координаты места) + сбор времени/места цели в форме совместимости.
+4. ~~Зарплаты~~ ✅ Сделано: `POST /salary/fork`, `POST /salary/cities`, `GET /salary/quota`. Канонический справочник 25+ ролей, 4-уровневый резолвер (alias → substring → word-overlap → DeepSeek за флагом), graceful widening (город→регион→РФ→grade), ручной сид ~130 записей, unit-тесты 41 кейс, `useProfileBackfill` на сабмите.
 4. Метрики/отчёты чек-ина и индекс выгорания (`check-in/report`, `metrics/daily`, `check-in/access` — пока моканы на фронте). См. стратегию вопросов выгорания.
 5. `RefreshToken` + `/auth/refresh` + `/logout`, обработка 401 на фронте, реальные платежи (`Subscription`).
