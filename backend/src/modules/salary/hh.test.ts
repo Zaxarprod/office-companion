@@ -10,6 +10,7 @@ import {
   extractNetSalary,
   itemToVacancyDto,
   percentile,
+  type HhSalaryRange,
   type HhVacancyItem,
   MIN_SAMPLE,
 } from './hh.logic'
@@ -70,13 +71,57 @@ describe('extractNetSalary', () => {
     assert.equal(extractNetSalary(item({ from: 9_000_000, to: null, currency: 'RUR', gross: false })), null)
   })
 
-  it('читает salary_range, если salary отсутствует', () => {
-    const it1: HhVacancyItem = {
-      id: '2',
+  it('salary_range с mode=MONTH читается как месячная сумма', () => {
+    const sr: HhSalaryRange = { from: 200_000, to: null, currency: 'RUR', gross: false, mode: { id: 'MONTH' } }
+    assert.equal(extractNetSalary({ id: '2', name: 'Dev', salary_range: sr }), 200_000)
+  })
+
+  it('salary_range с mode=HOUR → null (нельзя сравнивать с месячной медианой)', () => {
+    const sr: HhSalaryRange = { from: 2_000, to: null, currency: 'RUR', gross: false, mode: { id: 'HOUR' } }
+    assert.equal(extractNetSalary({ id: '3', name: 'Dev', salary_range: sr }), null)
+  })
+
+  it('salary_range с mode=SHIFT → null', () => {
+    const sr: HhSalaryRange = { from: 50_000, to: null, currency: 'RUR', gross: false, mode: { id: 'SHIFT' } }
+    assert.equal(extractNetSalary({ id: '4', name: 'Dev', salary_range: sr }), null)
+  })
+
+  it('salary_range с mode=SERVICE → null', () => {
+    const sr: HhSalaryRange = { from: 150_000, to: null, currency: 'RUR', gross: false, mode: { id: 'SERVICE' } }
+    assert.equal(extractNetSalary({ id: '5', name: 'Dev', salary_range: sr }), null)
+  })
+
+  it('salary_range с mode=FLY_IN_FLY_OUT → null', () => {
+    const sr: HhSalaryRange = { from: 120_000, to: null, currency: 'RUR', gross: false, mode: { id: 'FLY_IN_FLY_OUT' } }
+    assert.equal(extractNetSalary({ id: '6', name: 'Dev', salary_range: sr }), null)
+  })
+
+  it('salary_range приоритетнее устаревшего salary при наличии обоих', () => {
+    // salary_range HOUR → null (не month), salary есть — но salary_range приоритет: возвращаем null
+    const sr: HhSalaryRange = { from: 2_000, to: null, currency: 'RUR', gross: false, mode: { id: 'HOUR' } }
+    const item: HhVacancyItem = {
+      id: '7',
       name: 'Dev',
-      salary_range: { from: 200_000, to: null, currency: 'RUR', gross: false },
+      salary: { from: 100_000, to: null, currency: 'RUR', gross: false },
+      salary_range: sr,
     }
-    assert.equal(extractNetSalary(it1), 200_000)
+    assert.equal(extractNetSalary(item), null)
+  })
+
+  it('salary_range=null → откат к legacy salary', () => {
+    const item: HhVacancyItem = {
+      id: '8',
+      name: 'Dev',
+      salary: { from: 150_000, to: null, currency: 'RUR', gross: false },
+      salary_range: null,
+    }
+    assert.equal(extractNetSalary(item), 150_000)
+  })
+
+  it('salary_range MONTH gross применяет НДФЛ', () => {
+    const sr: HhSalaryRange = { from: 200_000, to: null, currency: 'RUR', gross: true, mode: { id: 'MONTH' } }
+    // 200_000 * 0.87 = 174_000
+    assert.equal(extractNetSalary({ id: '9', name: 'Dev', salary_range: sr }), 174_000)
   })
 })
 

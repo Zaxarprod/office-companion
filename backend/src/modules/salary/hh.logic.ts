@@ -5,20 +5,40 @@ import { GRADE_TO_HH_EXPERIENCE } from './salary.roles'
 
 // ── Типы ответа HH API (только нужные поля) ──────────────────────────────────
 
-/** Объект зарплаты HH (классический `salary` и новый `salary_range` — одинаковая форма). */
-export interface HhSalary {
+/**
+ * Устаревший объект зарплаты HH (`salary`, deprecated с 2024).
+ * `gross` и `currency` могут быть null в старых записях.
+ */
+export interface HhSalaryLegacy {
   from: number | null
   to: number | null
   currency: string | null
   gross: boolean | null
 }
 
+/**
+ * Новый объект зарплаты HH (`salary_range`).
+ * `mode.id` указывает гранулярность: `MONTH` | `HOUR` | `SHIFT` | `FLY_IN_FLY_OUT` | `SERVICE`.
+ * Принимаем только `MONTH`; остальные режимы — не сопоставимы с месячной зарплатой.
+ */
+export interface HhSalaryRange {
+  from: number | null
+  to: number | null
+  /** Всегда присутствует в salary_range (не nullable, в отличие от salary.currency). */
+  currency: string
+  /** Всегда присутствует в salary_range (не nullable, в отличие от salary.gross). */
+  gross: boolean
+  mode: { id: string; name?: string }
+  frequency?: { id: string; name?: string } | null
+}
+
 export interface HhVacancyItem {
   id: string
   name: string
-  salary?: HhSalary | null
-  /** Новое поле HH (постепенная миграция с `salary`). */
-  salary_range?: HhSalary | null
+  /** Устаревшее поле (deprecated). Используем как запасной вариант, если salary_range отсутствует. */
+  salary?: HhSalaryLegacy | null
+  /** Актуальное поле. Приоритет над salary; содержит mode (гранулярность). */
+  salary_range?: HhSalaryRange | null
   employer?: { name?: string | null } | null
   area?: { name?: string | null } | null
 }
@@ -45,32 +65,52 @@ export const MIN_SAMPLE = 5
 
 /**
  * Net-зарплата вакансии в ₽/мес или null, если посчитать нельзя.
- * Берём `salary` либо `salary_range`; считаем середину вилки; gross→net по НДФЛ;
- * валюты кроме RUR пропускаем; отсекаем явный мусор по санитарным границам.
+ *
+ * Приоритет: `salary_range` (актуальный, имеет mode) → `salary` (deprecated, fallback).
+ * Из salary_range принимаем только mode=MONTH; HOUR/SHIFT/FLY_IN_FLY_OUT/SERVICE — отбрасываем:
+ * эти суммы не сопоставимы с месячной зарплатой и исказят медиану.
+ * Валюты кроме RUR/RUB пропускаем; gross→net по НДФЛ 13%; отсекаем мусор по санитарным границам.
  */
 export const extractNetSalary = (item: HhVacancyItem): number | null => {
-  const salary = item.salary ?? item.salary_range
-  if (!salary) return null
-
-  // Только рубли — конвертацию валют не делаем (честнее пропустить).
-  const currency = (salary.currency ?? 'RUR').toUpperCase()
-  if (currency !== 'RUR' && currency !== 'RUB') return null
-
-  const { from, to } = salary
-  let gross: number | null
-  if (from != null && to != null) {
-    gross = (from + to) / 2
-  } else if (from != null) {
-    gross = from
-  } else if (to != null) {
-    gross = to
-  } else {
-    gross = null
+  // Сначала пробуем актуальное поле salary_range.
+  if (item.salary_range) {
+    // Принимаем только месячные суммы; иначе результат нельзя сравнить с медианой.
+    if (item.salary_range.mode?.id !== 'MONTH') return null
+    return extractFromSalaryFields(item.salary_range.from, item.salary_range.to, item.salary_range.currency, item.salary_range.gross)
   }
-  if (gross == null || !Number.isFinite(gross) || gross <= 0) return null
+
+  // Fallback к устаревшему полю salary (всегда месячная сумма, mode отсутствует).
+  if (item.salary) {
+    return extractFromSalaryFields(item.salary.from, item.salary.to, item.salary.currency ?? 'RUR', item.salary.gross)
+  }
+
+  return null
+}
+
+/** Общая логика извлечения net-зарплаты из произвольных числовых полей. */
+const extractFromSalaryFields = (
+  from: number | null,
+  to: number | null,
+  currency: string,
+  gross: boolean | null,
+): number | null => {
+  // Только рубли — конвертацию валют не делаем (честнее пропустить).
+  if (currency.toUpperCase() !== 'RUR' && currency.toUpperCase() !== 'RUB') return null
+
+  let amount: number | null
+  if (from != null && to != null) {
+    amount = (from + to) / 2
+  } else if (from != null) {
+    amount = from
+  } else if (to != null) {
+    amount = to
+  } else {
+    amount = null
+  }
+  if (amount == null || !Number.isFinite(amount) || amount <= 0) return null
 
   // gross === null трактуем как «до вычета» (большинство вакансий в РФ так).
-  const net = salary.gross === false ? gross : gross * NET_FACTOR
+  const net = gross === false ? amount : amount * NET_FACTOR
   const rounded = Math.round(net)
 
   if (rounded < MIN_SANE_SALARY || rounded > MAX_SANE_SALARY) return null
