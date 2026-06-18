@@ -10,6 +10,9 @@ import {
 const HH_API_BASE = process.env.HH_API_BASE ?? 'https://api.hh.ru'
 // HH требует осмысленный User-Agent, иначе режет запросы.
 const HH_USER_AGENT = process.env.HH_USER_AGENT ?? 'derzhimsya/1.0 (zakhar.production@gmail.com)'
+// Bearer-токен приложения HH (client_credentials). Получить: dev.hh.ru → Мои приложения.
+// Без токена /vacancies возвращает 403 — код откатится к БД.
+const HH_APP_TOKEN = process.env.HH_APP_TOKEN ?? ''
 
 /** Совместимо с глобальным fetch — инъектируется в тестах. */
 export type FetchLike = (url: string, init?: { headers?: Record<string, string>; signal?: AbortSignal }) => Promise<{
@@ -53,8 +56,15 @@ const fetchPage = async (
     periodDays: PERIOD_DAYS,
   })
   const url = `${HH_API_BASE}/vacancies?${query}`
+  const headers: Record<string, string> = {
+    'User-Agent': HH_USER_AGENT,
+    Accept: 'application/json',
+  }
+  if (HH_APP_TOKEN) {
+    headers['Authorization'] = `Bearer ${HH_APP_TOKEN}`
+  }
   const response = await fetchFn(url, {
-    headers: { 'User-Agent': HH_USER_AGENT, Accept: 'application/json' },
+    headers,
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   })
   if (!response.ok) {

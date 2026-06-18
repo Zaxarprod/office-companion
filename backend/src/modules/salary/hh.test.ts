@@ -217,6 +217,22 @@ describe('buildVacanciesQuery', () => {
   })
 })
 
+// ── buildVacanciesQuery: period ──────────────────────────────────────────────
+
+describe('buildVacanciesQuery: period', () => {
+  it('period=30 включён в запрос по умолчанию', () => {
+    const qs = buildVacanciesQuery({ hhRoleId: 96, grade: null, areaId: 1, page: 0, perPage: 100, periodDays: 30 })
+    const params = new URLSearchParams(qs)
+    assert.equal(params.get('period'), '30')
+  })
+
+  it('только_with_salary=true всегда включено', () => {
+    const qs = buildVacanciesQuery({ grade: null, areaId: 113, page: 0, perPage: 100, periodDays: 30 })
+    const params = new URLSearchParams(qs)
+    assert.equal(params.get('only_with_salary'), 'true')
+  })
+})
+
 // ── fetchVacancies (инъекция fetch) ──────────────────────────────────────────
 
 describe('fetchVacancies', () => {
@@ -284,5 +300,20 @@ describe('fetchVacancies', () => {
     }
     await fetchVacancies({ hhRoleId: 96, grade: null, areaId: 1, maxPages: 2 }, fakeFetch)
     assert.equal(calls, 2)
+  })
+
+  it('инъектированный fetch получает User-Agent и Accept', async () => {
+    let capturedHeaders: Record<string, string> | undefined
+    const fakeFetch: FetchLike = async (_url, init) => {
+      capturedHeaders = init?.headers
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ items: [makeItem('x')], found: 1, pages: 1, page: 0, per_page: 100 }),
+      }
+    }
+    await fetchVacancies({ hhRoleId: 96, grade: null, areaId: 1 }, fakeFetch)
+    assert.ok(capturedHeaders?.['User-Agent'])
+    assert.equal(capturedHeaders?.['Accept'], 'application/json')
   })
 })

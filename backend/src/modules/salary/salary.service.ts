@@ -143,21 +143,8 @@ const cacheHhResult = async (roleKey: string, hh: HhResolved): Promise<void> => 
 
 export const salaryService = {
   getFork: async (userId: string, input: SalaryForkInput): Promise<SalaryForkDto> => {
-    // Quota check
-    const user = await prisma.user.findUnique({ where: { id: userId }, select: { isPro: true } })
-    if (!user?.isPro) {
-      const since = new Date(Date.now() - QUOTA_WINDOW_MS)
-      const used = await prisma.usageEvent.count({
-        where: { userId, tool: 'salary', createdAt: { gte: since } },
-      })
-      if (used >= FREE_QUOTA) {
-        throw new AppError(
-          429,
-          'QUOTA_EXCEEDED',
-          'Лимит прогонов исчерпан — обнови план или подожди 30 дней',
-        )
-      }
-    }
+    // MVP: квота не применяется — инструмент доступен без ограничений.
+    // usageEvent создаётся ниже для аналитики, но не блокирует доступ.
 
     const [roleKey, grade] = await Promise.all([
       resolveRole(input.profession),
